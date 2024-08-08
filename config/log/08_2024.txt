@@ -11,3 +11,4 @@
 06/08/2024 19:48 tales@flexibus.com.br : Permissao alterada, Modulo: RH, Acesso:[[0,1,2]])
 06/08/2024 19:48 tales@flexibus.com.br : Permissao alterada, Modulo: Comercial, Acesso:[[0,1]])
 06/08/2024 19:48 tales@flexibus.com.br : Permissao alterada, Modulo: Fiscal, Acesso:[[0,1]])
+08/08/2024 04:43 adm@museu.com.br :  Imagem Alterada -> Perfil Usuario: adm@museu.com.br

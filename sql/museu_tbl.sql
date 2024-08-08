@@ -23,3 +23,16 @@ CREATE TABLE tb_acesso (
 	UNIQUE KEY (email),
     PRIMARY KEY (id)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+
+ DROP TABLE tb_mail;
+CREATE TABLE tb_mail (
+	data TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+    id_from int(11) NOT NULL,
+    id_to int(11) NOT NULL,
+    message varchar(512),
+    looked boolean DEFAULT 0,
+    FOREIGN KEY (id_from) REFERENCES tb_usuario(id),
+    FOREIGN KEY (id_to) REFERENCES tb_usuario(id),
+    PRIMARY KEY (data,id_from)
+) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;

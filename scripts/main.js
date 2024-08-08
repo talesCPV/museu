@@ -45,7 +45,7 @@ function pictab(e){
 
         const myPromisse = queryDB(params,'USR-3');
         myPromisse.then((resolve)=>{
-            const json = JSON.parse(resolve)[0]
+            const json = JSON.parse(resolve)[0]        
             const unread = json.new_mail
             document.querySelector('#mail-badge-lbl').innerHTML = unread!='0' ? unread : ''
         })

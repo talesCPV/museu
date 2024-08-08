@@ -10,7 +10,7 @@ function closeMenu(){
 
 
 function openMenu(){
-
+alert()
     var drop = 0
     const data = new URLSearchParams();        
         data.append("hash", localStorage.getItem('hash'));
