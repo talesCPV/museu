@@ -91,7 +91,9 @@ function getFloat(text,dec=2){
     let before_dot = '0';
     let after_dot = '';
     let dot =  '';
+    let neg = 0
     for(var i = 0; i<text.length; i++){
+        neg = (i==0 && text[i]=='-') ? 1 : neg
         if(dot.length == 0){
             if(['.',','].includes(text[i])){
                 dot = '.'
@@ -104,8 +106,8 @@ function getFloat(text,dec=2){
                 after_dot +=  ok_chr.includes(text[i]) ? text[i] : ''
             }
         }
-    }     
-    return before_dot+dot+after_dot;
+    }
+    return (neg ? '-':'')+before_dot+dot+after_dot;
 }
 
 function getNum(V){

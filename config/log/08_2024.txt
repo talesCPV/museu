@@ -4,3 +4,9 @@
 08/08/2024 14:52 adm@museu.com.br : Insercao de novo usuarios, email:undefined -> gilberto@teste.com.br, acesso:undefined -> 1
 08/08/2024 14:53 adm@museu.com.br : Insercao de novo usuarios, email:undefined -> gilberto@teste.com.br, acesso:undefined -> 1
 08/08/2024 14:57 adm@museu.com.br : Insercao de novo usuarios, email:undefined -> gilberto@teste.com.br, acesso:undefined -> 1
+08/08/2024 20:22 adm@museu.com.br : Menu Alterado (Museu, adm_museu.html, pop-up, Cadastro de Museus)
+08/08/2024 21:18 adm@museu.com.br : Museu Cadastrado  -> Museu do Automovel de Cacapava
+08/08/2024 21:19 adm@museu.com.br : Museu Cadastrado  -> Museu do Automovel de cacapava
+08/08/2024 21:24 adm@museu.com.br : Museu Cadastrado  -> Museu do Automovel de Cacapava
+08/08/2024 21:26 adm@museu.com.br : Museu Editado Museu do Automovel de Cacapava -> Museu do Automovel de Cacapava
+08/08/2024 21:28 adm@museu.com.br : Museu Editado Museu do Automovel de Cacapava -> Museu do Automovel de Cacapava

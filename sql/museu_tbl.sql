@@ -55,3 +55,25 @@ CREATE TABLE tb_calendario (
     obs varchar(255),
     PRIMARY KEY (id_user,data_agd)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+/* MUSEU */
+
+ DROP TABLE tb_museu;
+CREATE TABLE tb_museu (
+    id int(11) NOT NULL AUTO_INCREMENT,
+    nome varchar(90) NOT NULL,
+    lat double DEFAULT NULL,
+    lon double DEFAULT NULL,
+	pais varchar(25) DEFAULT NULL,
+    uf varchar(2) DEFAULT NULL,
+	cidade varchar(60) DEFAULT NULL,
+    rua varchar(60) DEFAULT NULL,
+    num varchar(6) DEFAULT NULL,
+    comp varchar(60) DEFAULT NULL,
+    bairro varchar(60) DEFAULT NULL,
+    tel varchar(11) DEFAULT NULL,
+    email varchar(80) DEFAULT NULL,
+    obs varchar(255) DEFAULT NULL,
+    cep varchar(8) DEFAULT NULL,
+    PRIMARY KEY (id)
+) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;

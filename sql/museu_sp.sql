@@ -295,4 +295,66 @@ DELIMITER $$
 		SET @id_call = (SELECT IFNULL(id,0) FROM tb_usuario WHERE hash COLLATE utf8_general_ci = Ihash COLLATE utf8_general_ci LIMIT 1);
 		SELECT id,email FROM tb_usuario WHERE id != @id_call ORDER BY email ASC;
 	END $$
-DELIMITER ; 
+DELIMITER ;
+
+/* MUSEU */
+
+ DROP PROCEDURE sp_view_museu;
+DELIMITER $$
+	CREATE PROCEDURE sp_view_museu(
+		IN Iallow varchar(80),
+		IN Ihash varchar(64),
+		IN Ifield varchar(30),
+        IN Isignal varchar(4),
+		IN Ivalue varchar(50)
+    )
+	BEGIN    
+		CALL sp_allow(Iallow,Ihash);
+		IF(@allow)THEN
+			SET @quer =CONCAT('SELECT * FROM tb_museu WHERE ',Ifield,' ',Isignal,' ',Ivalue,' ORDER BY ',Ifield,';');
+			PREPARE stmt1 FROM @quer;
+			EXECUTE stmt1;
+        END IF;
+	END $$
+DELIMITER ;
+
+ DROP PROCEDURE sp_set_museu;
+DELIMITER $$
+	CREATE PROCEDURE sp_set_museu(	
+		IN Iallow varchar(80),
+		IN Ihash varchar(64),
+        IN Iid int(11),
+		IN Inome varchar(90),
+		IN Ilat double,
+		IN Ilon double,
+		IN Ipais varchar(25),
+		IN Iuf varchar(2),
+		IN Icidade varchar(60),
+		IN Irua varchar(60),
+		IN Inum varchar(6),
+		IN Icomp varchar(60),
+		IN Ibairro varchar(60),
+		IN Itel varchar(11),
+		IN Iemail varchar(80),
+		IN Iobs varchar(255),
+		IN Icep varchar(8)
+    )
+	BEGIN    
+		CALL sp_allow(Iallow,Ihash);
+		IF(@allow)THEN
+			IF(Iid=0)THEN
+				INSERT INTO tb_museu (id,nome,lat,lon,pais,uf,cidade,rua,num,comp,bairro,tel,email,obs,cep)
+				VALUES (Iid,Inome,Ilat,Ilon,Ipais,Iuf,Icidade,Irua,Inum,Icomp,Ibairro,Itel,Iemail,Iobs,Icep);
+            ELSE 
+				IF(Inome="")THEN
+					DELETE FROM tb_museu WHERE id=Iid;
+				ELSE
+					UPDATE tb_museu
+					SET nome=Inome,lat=Ilat,lon=Ilon,pais=Ipais,uf=Iuf,cidade=Icidade,rua=Irua,
+                    num=Inum,comp=Icomp,bairro=Ibairro,tel=Itel,email=Iemail,obs=Iobs,cep=Icep
+					WHERE id=Iid;
+				END IF;
+            END IF;
+        END IF;
+	END $$
+DELIMITER ;
