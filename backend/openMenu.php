@@ -49,11 +49,11 @@ function addItem($access,$obj){
 	  $path = "../config/menu.json";
 	  $hash = $_POST["hash"];
     $access = -1;
-    
+
     include_once "connect.php";
     include_once "crip.php";
 
-    $query = "SELECT access FROM tb_user WHERE hash=\"$hash\";";
+    $query = "SELECT access FROM tb_usuario WHERE hash=\"$hash\";";
 
 // echo $query;    
 
@@ -66,7 +66,6 @@ function addItem($access,$obj){
       $access = $row["access"];
 
 		}
-
 	    $conexao->close();  
 
       if (file_exists($path)) {

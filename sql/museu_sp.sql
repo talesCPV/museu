@@ -35,7 +35,7 @@ DELIMITER $$
     )
 	BEGIN    
 		SET @hash = (SELECT SHA2(CONCAT(Iemail, Isenha), 256));
-		SELECT *, SUBSTRING_INDEX(email,"@",1) AS nome FROM tb_usuario WHERE hash=@hash;
+		SELECT *, IF(nome="",SUBSTRING_INDEX(email,"@",1),nome) AS nome FROM tb_usuario WHERE hash=@hash;
 	END $$
 DELIMITER ;
 
@@ -59,12 +59,12 @@ DELIMITER $$
 				DELETE FROM tb_user WHERE id=Iid;
             ELSE			
 				IF(Iid=0)THEN
-					INSERT INTO tb_user (email,hash,access)VALUES(Iemail,SHA2(CONCAT(Iemail, Isenha), 256),Iaccess);            
+					INSERT INTO tb_usuario (email,hash,access)VALUES(Iemail,SHA2(CONCAT(Iemail, Isenha), 256),Iaccess);            
                 ELSE
 					IF(Isenha="")THEN
-						UPDATE tb_user SET email=Iemail, access=Iaccess WHERE id=Iid;
+						UPDATE tb_usuario SET email=Iemail, access=Iaccess WHERE id=Iid;
                     ELSE
-						UPDATE tb_user SET email=Iemail, hash=SHA2(CONCAT(Iemail, Isenha), 256), access=Iaccess WHERE id=Iid;
+						UPDATE tb_usuario SET email=Iemail, hash=SHA2(CONCAT(Iemail, Isenha), 256), access=Iaccess WHERE id=Iid;
                     END IF;
                 END IF;
             END IF;
@@ -87,11 +87,11 @@ DELIMITER $$
 	BEGIN    
 		CALL sp_allow(Iallow,Ihash);
 		IF(@allow)THEN
-			SET @quer =CONCAT('SELECT id,email,id_func,access, IF(access=0,"ROOT",IFNULL((SELECT nome FROM tb_usr_perm_perfil WHERE USR.access = id),"DESCONHECIDO")) AS perfil FROM tb_user AS USR WHERE ',Ifield,' ',Isignal,' ',Ivalue,' ORDER BY ',Ifield,';');
+			SET @quer =CONCAT('SELECT id,email,access, IF(access=0,"ROOT",IFNULL((SELECT nome FROM tb_usr_perm_perfil WHERE USR.access = id),"DESCONHECIDO")) AS perfil FROM tb_usuario AS USR WHERE ',Ifield,' ',Isignal,' ',Ivalue,' ORDER BY ',Ifield,';');
 			PREPARE stmt1 FROM @quer;
 			EXECUTE stmt1;
 		ELSE 
-			SELECT 0 AS id, "" AS email, 0 AS id_func, 0 AS access;
+			SELECT 0 AS id, "" AS email, 0 AS access;
         END IF;
 	END $$
 DELIMITER ;
@@ -127,3 +127,171 @@ DELIMITER $$
         END IF;
 	END $$
 DELIMITER ;
+
+	/* PERMISSÂO */
+
+ DROP PROCEDURE sp_set_usr_perm_perf;
+DELIMITER $$
+	CREATE PROCEDURE sp_set_usr_perm_perf(	
+		IN Iaccess varchar(50),
+		IN Ihash varchar(64),
+        In Iid int(11),
+		IN Inome varchar(30)
+    )
+	BEGIN    
+		SET @access = (SELECT IFNULL(access,-1) FROM tb_usuario WHERE hash COLLATE utf8_general_ci = Ihash COLLATE utf8_general_ci LIMIT 1);
+        IF(@access IN(0))THEN
+			IF(Iid = 0 AND Inome != "")THEN
+				INSERT INTO tb_usr_perm_perfil (nome) VALUES (Inome);
+            ELSE
+				IF(Inome = "")THEN
+					DELETE FROM tb_usr_perm_perfil WHERE id=Iid;
+				ELSE
+					UPDATE tb_usr_perm_perfil SET nome = Inome WHERE id=Iid;
+                END IF;
+            END IF;			
+			SELECT * FROM tb_usr_perm_perfil;
+        END IF;
+	END $$
+DELIMITER ;
+
+ DROP PROCEDURE sp_view_usr_perm_perf;
+DELIMITER $$
+	CREATE PROCEDURE sp_view_usr_perm_perf(	
+		IN Iaccess varchar(50),
+		IN Ihash varchar(64),
+		IN Ifield varchar(30),
+        IN Isignal varchar(4),
+		IN Ivalue varchar(50)
+    )
+	BEGIN
+		SET @access = (SELECT IFNULL(access,-1) FROM tb_usuario WHERE hash COLLATE utf8_general_ci = Ihash COLLATE utf8_general_ci LIMIT 1);
+		IF(@access IN (0))THEN
+			SET @quer = CONCAT('SELECT * FROM tb_usr_perm_perfil WHERE ',Ifield,' ',Isignal,' ',Ivalue,' ORDER BY ',Ifield,';');
+			PREPARE stmt1 FROM @quer;
+			EXECUTE stmt1;
+		ELSE 
+			SELECT 0 AS id, "" AS nome;
+        END IF;
+	END $$
+DELIMITER ;
+
+/* CALENDAR */
+
+ DROP PROCEDURE sp_view_calendar;
+DELIMITER $$
+	CREATE PROCEDURE sp_view_calendar(	
+		IN Ihash varchar(64),
+		IN IdataIni date,
+		IN IdataFin date
+    )
+	BEGIN    
+		SET @id_call = (SELECT IFNULL(id,0) FROM tb_usuario WHERE hash COLLATE utf8_general_ci = Ihash COLLATE utf8_general_ci LIMIT 1);
+		SELECT * FROM tb_calendario WHERE id_user=@id_call AND data_agd>=IdataIni AND data_agd<=IdataFin;
+	END $$
+DELIMITER ;
+
+ DROP PROCEDURE sp_set_calendar;
+DELIMITER $$
+	CREATE PROCEDURE sp_set_calendar(	
+		IN Ihash varchar(64),
+		IN Idata date,
+		IN Iobs varchar(255)
+    )
+	BEGIN    
+		SET @id_call = (SELECT IFNULL(id,0) FROM tb_usuario WHERE hash COLLATE utf8_general_ci = Ihash COLLATE utf8_general_ci LIMIT 1);
+        IF(@id_call >0)THEN
+			SET @exist = (SELECT COUNT(*) FROM tb_calendario WHERE id_user=@id_call AND data_agd = Idata);
+			IF(@exist AND Iobs = "")THEN
+				DELETE FROM tb_calendario WHERE id_user=@id_call AND data_agd = Idata; 
+			ELSE
+				INSERT INTO tb_calendario (id_user, data_agd, obs) VALUES(@id_call, Idata, Iobs)
+                ON DUPLICATE KEY UPDATE obs=Iobs;
+			END IF;
+        END IF;
+	END $$
+DELIMITER ;
+
+/* MAIL */
+
+ DROP PROCEDURE sp_set_mail;
+DELIMITER $$
+	CREATE PROCEDURE sp_set_mail(	
+		IN Ihash varchar(64),
+        IN Iid_to int(11),
+		IN Imessage varchar(512)
+    )
+	BEGIN    
+		SET @id_call = (SELECT IFNULL(id,0) FROM tb_usuario WHERE hash COLLATE utf8_general_ci = Ihash COLLATE utf8_general_ci LIMIT 1);
+        IF(@id_call >0)THEN
+			INSERT INTO tb_mail (id_from,id_to,message) VALUES (@id_call,Iid_to,Imessage);
+        END IF;
+	END $$
+DELIMITER ;
+
+ DROP PROCEDURE sp_view_mail;
+DELIMITER $$
+	CREATE PROCEDURE sp_view_mail(	
+		IN Ihash varchar(64),
+        IN Isend boolean
+    )
+	BEGIN    
+		SET @id_call = (SELECT IFNULL(id,0) FROM tb_usuario WHERE hash COLLATE utf8_general_ci = Ihash COLLATE utf8_general_ci LIMIT 1);
+		IF(@id_call > 0)THEN
+			IF(Isend)THEN
+				SELECT MAIL.*, USR.email AS mail_from
+					FROM tb_mail AS MAIL 
+					INNER JOIN tb_usuario AS USR
+					ON MAIL.id_from = USR.id AND MAIL.id_to = @id_call;            
+            ELSE
+				SELECT MAIL.*, USR.email AS mail_to
+					FROM tb_mail AS MAIL 
+					INNER JOIN tb_usuario AS USR
+					ON MAIL.id_to = USR.id AND MAIL.id_from = @id_call;            
+            END IF;
+        END IF;
+	END $$
+DELIMITER ;
+
+ DROP PROCEDURE sp_del_mail;
+DELIMITER $$
+	CREATE PROCEDURE sp_del_mail(	
+		IN Ihash varchar(64),
+        IN Idata datetime,
+        IN Iid_from int(11),
+        IN Iid_to int(11)
+    )
+	BEGIN        
+		SET @id_call = (SELECT IFNULL(id,0) FROM tb_usuario WHERE hash COLLATE utf8_general_ci = Ihash COLLATE utf8_general_ci LIMIT 1);
+		IF(@id_call = Iid_to OR @id_call = Iid_from)THEN
+			DELETE FROM tb_mail WHERE data = Idata AND id_from = Iid_from AND id_to = Iid_to;
+        END IF;
+	END $$
+DELIMITER ;
+
+ DROP PROCEDURE sp_mark_mail;
+DELIMITER $$
+	CREATE PROCEDURE sp_mark_mail(	
+		IN Ihash varchar(64),
+        IN Idata datetime,
+        IN Iid_from int(11),
+        IN Iid_to int(11)
+    )
+	BEGIN        
+		SET @id_call = (SELECT IFNULL(id,0) FROM tb_usuario WHERE hash COLLATE utf8_general_ci = Ihash COLLATE utf8_general_ci LIMIT 1);
+		IF(@id_call = Iid_to OR @id_call = Iid_from)THEN
+			UPDATE tb_mail SET looked=1 WHERE data = Idata AND id_from = Iid_from AND id_to = Iid_to;
+        END IF;
+	END $$
+DELIMITER ;
+
+ DROP PROCEDURE sp_all_mail_adress;
+DELIMITER $$
+	CREATE PROCEDURE sp_all_mail_adress(	
+		IN Ihash varchar(64)
+    )
+	BEGIN
+		SET @id_call = (SELECT IFNULL(id,0) FROM tb_usuario WHERE hash COLLATE utf8_general_ci = Ihash COLLATE utf8_general_ci LIMIT 1);
+		SELECT id,email FROM tb_usuario WHERE id != @id_call ORDER BY email ASC;
+	END $$
+DELIMITER ; 

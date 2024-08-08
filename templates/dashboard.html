@@ -82,10 +82,10 @@
     .then((response)=>{
         const json = response.trim() != '' ? JSON.parse(JSON.parse(response)) : new Object
         pageData.wallpaper = new Object
-        pageData.wallpaper.pic = json.hasOwnProperty('pic') ? json.pic : 'assets/wallpaper_03.jpg'
+        pageData.wallpaper.pic = json.hasOwnProperty('pic') ? json.pic : 'assets/wallpapers/wallpaper_02.jpg'
         pageData.wallpaper.efect = json.hasOwnProperty('efect') ? json.efect : 'normal'
         pageData.wallpaper.repeat = json.hasOwnProperty('repeat') ? json.repeat : 'no-repeat'
-        pageData.wallpaper.size = json.hasOwnProperty('size') ? json.size : 'contain'
+        pageData.wallpaper.size = json.hasOwnProperty('size') ? json.size : 'cover'
         pageData.wallpaper.color = json.hasOwnProperty('color') ? json.color : '#FFFFFF'
         pageFunc.wallpaper()
     })
@@ -112,13 +112,6 @@
 
         if(e.target.nodeName == 'BODY'){
             const tbl = []
-
-            const calc = new Object
-            calc.label = 'Calculadora'
-            calc.link = ()=>{
-                openHTML('usr_calc.html','pop-up','Calculadora',{},300)
-            }            
-            tbl.push(calc)
 
             const mail = new Object
             mail.label = 'Mensagens'

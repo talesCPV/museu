@@ -10,7 +10,7 @@ function closeMenu(){
 
 
 function openMenu(){
-alert()
+
     var drop = 0
     const data = new URLSearchParams();        
         data.append("hash", localStorage.getItem('hash'));
@@ -41,9 +41,10 @@ alert()
             document.querySelector('#user-name').innerHTML = localStorage.getItem('nome')
             document.querySelector('#user-email').innerHTML = localStorage.getItem('email')
         }catch{            
-
+/*
             localStorage.clear()
             this.location.reload(true)
+*/            
         }
     })
 
