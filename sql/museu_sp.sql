@@ -116,11 +116,12 @@ DELIMITER ;
  DROP PROCEDURE sp_check_usr_mail;
 DELIMITER $$
 	CREATE PROCEDURE sp_check_usr_mail(
+		IN Iallow varchar(80),
 		IN Ihash varchar(64)
     )
 	BEGIN        
-		SET @id_call = (SELECT IFNULL(id,0) FROM tb_usuario WHERE hash COLLATE utf8_general_ci = Ihash COLLATE utf8_general_ci LIMIT 1);
-		IF(@id_call>0)THEN
+		CALL sp_allow(Iallow,Ihash);
+		IF(@allow)THEN        
 			SELECT COUNT(*) AS new_mail FROM tb_mail WHERE id_to = @id_call AND looked=0;
 		ELSE
 			SELECT 0 AS new_mail ;
@@ -133,14 +134,14 @@ DELIMITER ;
  DROP PROCEDURE sp_set_usr_perm_perf;
 DELIMITER $$
 	CREATE PROCEDURE sp_set_usr_perm_perf(	
-		IN Iaccess varchar(50),
+		IN Iallow varchar(80),
 		IN Ihash varchar(64),
         In Iid int(11),
 		IN Inome varchar(30)
     )
 	BEGIN    
-		SET @access = (SELECT IFNULL(access,-1) FROM tb_usuario WHERE hash COLLATE utf8_general_ci = Ihash COLLATE utf8_general_ci LIMIT 1);
-        IF(@access IN(0))THEN
+		CALL sp_allow(Iallow,Ihash);
+		IF(@allow)THEN   
 			IF(Iid = 0 AND Inome != "")THEN
 				INSERT INTO tb_usr_perm_perfil (nome) VALUES (Inome);
             ELSE
@@ -158,15 +159,15 @@ DELIMITER ;
  DROP PROCEDURE sp_view_usr_perm_perf;
 DELIMITER $$
 	CREATE PROCEDURE sp_view_usr_perm_perf(	
-		IN Iaccess varchar(50),
+		IN Iallow varchar(80),
 		IN Ihash varchar(64),
 		IN Ifield varchar(30),
         IN Isignal varchar(4),
 		IN Ivalue varchar(50)
     )
 	BEGIN
-		SET @access = (SELECT IFNULL(access,-1) FROM tb_usuario WHERE hash COLLATE utf8_general_ci = Ihash COLLATE utf8_general_ci LIMIT 1);
-		IF(@access IN (0))THEN
+		CALL sp_allow(Iallow,Ihash);
+		IF(@allow)THEN   
 			SET @quer = CONCAT('SELECT * FROM tb_usr_perm_perfil WHERE ',Ifield,' ',Isignal,' ',Ivalue,' ORDER BY ',Ifield,';');
 			PREPARE stmt1 FROM @quer;
 			EXECUTE stmt1;

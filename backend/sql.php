@@ -8,7 +8,7 @@
         "USR-0"  => 'CALL sp_viewUser(@access,@hash,"x00","x01","x02");', // FIELD,SIGNAL, VALUE
         "USR-1"  => 'CALL sp_setUser(@access,@hash,x00,"x01","x02","x03");', // ID, EMAIL, PASS, ACCESS
         "USR-2"  => 'CALL sp_updatePass(@hash,"x00");', // PASS
-        "USR-3"  => 'CALL sp_check_usr_mail(@hash);', //
+        "USR-3"  => 'CALL sp_check_usr_mail(@access,@hash);', //
 
         /* CALENDAR */
         "CAL-0"  => 'CALL sp_view_calendar(@hash,"x00","x01");', // DT_INI, DT_FIN
