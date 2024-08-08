@@ -8,7 +8,6 @@
 
         body{
             background-image: url('assets/wallpapers/wallpaper_01.jpg');
-/*            background-size: cover;*/
             background-repeat: no-repeat;
             background-clip: border-box;
             background-position-x: center ;
@@ -92,6 +91,11 @@
             -webkit-text-fill-color: #fff !important;
         }
 
+        @media all and (max-width : 768px) {
+            body{
+            background-size: unset;
+        }
+        }
 
     </style>
 
