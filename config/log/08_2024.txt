@@ -10,3 +10,13 @@
 08/08/2024 21:24 adm@museu.com.br : Museu Cadastrado  -> Museu do Automovel de Cacapava
 08/08/2024 21:26 adm@museu.com.br : Museu Editado Museu do Automovel de Cacapava -> Museu do Automovel de Cacapava
 08/08/2024 21:28 adm@museu.com.br : Museu Editado Museu do Automovel de Cacapava -> Museu do Automovel de Cacapava
+09/08/2024 14:42 adm@museu.com.br : Menu Alterado (Acervos, adm_museu.html, pop-up, Cadastro de Acervos)
+09/08/2024 14:53 adm@museu.com.br : Menu Alterado (Acervos, adm_acervo.html, pop-up, Cadastro de Acervos)
+09/08/2024 15:02 adm@museu.com.br : Acervo Cadastrado  -> MUSEU PAULISTA DE ANTIGUIDADES MECANICAS ROBERTO LEE
+09/08/2024 15:02 adm@museu.com.br : Acervo Editado MUSEU PAULISTA DE ANTIGUIDADES MECANICAS ROBERTO LEE -> MUSEU PAULISTA DE ANTIGUIDADES MECANICAS ROBERTO LEE
+09/08/2024 15:05 adm@museu.com.br : Acervo Editado MUSEU PAULISTA DE ANTIGUIDADES MECANICAS ROBERTO LEE -> MUSEU PAULISTA DE ANTIGUIDADES MECANICAS ROBERTO LEE
+09/08/2024 15:06 adm@museu.com.br : Acervo Editado MUSEU PAULISTA DE ANTIGUIDADES MECANICAS ROBERTO LEE -> MUSEU PAULISTA DE ANTIGUIDADES MECANICAS ROBERTO LEE
+09/08/2024 15:08 adm@museu.com.br : Acervo Editado MUSEU PAULISTA DE ANTIGUIDADES MECANICAS ROBERTO LEE -> MUSEU PAULISTA DE ANTIGUIDADES MECANICAS ROBERTO LEE
+09/08/2024 15:10 adm@museu.com.br : Acervo Cadastrado  -> 
+09/08/2024 15:10 adm@museu.com.br : Acervo Deletado -> 
+09/08/2024 16:09 adm@museu.com.br : Menu Alterado (Itens, adm_itens.html, pop-up, Cadastro de Itens)

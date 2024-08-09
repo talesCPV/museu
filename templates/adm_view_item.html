@@ -1,0 +1,213 @@
+
+<template>
+    <style>
+        .frm{
+            padding: 10px;
+        }
+
+        @media all and (max-width : 768px) {
+            .frm input, .frm select{
+                width: 98% !important;
+            }
+        }
+
+    </style>
+  
+    <fieldset class="frm" >
+        <legend>Ítem</legend>
+
+        <div class="inline">
+            <label for="edtRazSoc">Nome*</label>
+            <input type="text" class="only-view" id="edtNome" maxlength="90" disabled>
+        </div>
+        <div class="inline">
+            <label for="cmbAcervo">Acervo*</label>
+            <div class="edtbtn">
+                <input type="text" id="edtBuscaAcervo" readonly>
+                <button id="btnBuscaAcervo" class="only-view btn-round" disabled><span class="mdi mdi-magnify"></span></button>
+            </div>
+        </div>        
+
+        <div class="inline">
+            <label for="edtDesc">Descrição*</label>
+            <textarea class="only-view" id="edtDesc" rows="5" disabled></textarea>
+        </div>        
+        <div class="inline">
+            <label for="cmbCat">Categoria</label>
+            <select class="only-view" id="cmbCat" disabled>
+                <option value="VCL" selected>Veículo</option>
+                <option value="QDR">Quadro</option>
+            </select>
+        </div>
+        <div class="frm-cat VCL">
+            <div class="inline">
+                <label for="edtVclPais">País</label>
+                <input type="text" class="only-view" id="edtVclPais" maxlength="25" disabled>
+                <label for="edtVclMarca">Marca</label>
+                <input type="text" class="only-view" id="edtVclMarca" maxlength="20" disabled>
+            </div>
+            <div class="inline">
+                <label for="edtVclAno">Ano</label>
+                <input type="text" class="only-view" id="edtVclAno" maxlength="4" style="width: 200px;" disabled>
+                <label for="edtVclModelo">Modelo</label>
+                <input type="text" class="only-view" id="edtVclModelo" maxlength="30" disabled>
+                </div>
+                <div class="inline">
+                <label for="edtVclTipo">Tipo</label>
+                <input type="text" class="only-view" id="edtVclTipo" maxlength="20" disabled>
+                <label for="edtVclCor">Cor</label>
+                <input type="text" class="only-view" id="edtVclCor" maxlength="15" disabled>
+                </div>
+                <div class="inline">
+                <label for="edtVclCil">Cilindros</label>
+                <input type="text" class="only-view" id="edtVclCil" maxlength="3" onfocus="this.select();" inputmode="decimal" onkeyup="valInt(this)"disabled>
+                <label for="edtVclCdd">Cilindradas</label>
+                <input type="text" class="only-view" id="edtVclCdd" maxlength="10" onfocus="this.select();" inputmode="decimal" onkeyup="valFloat(this,4)" disabled>
+                <label for="edtVclPotHP">Potência HP</label>
+                <input type="text" class="only-view" id="edtVclPotHP" maxlength="10" onfocus="this.select();" inputmode="decimal" onkeyup="valFloat(this,4)" disabled>
+                </div>
+                <div class="inline">
+                <label for="edtVclAlt">Altura</label>
+                <input type="text" class="only-view" id="edtVclAlt" maxlength="10" onfocus="this.select();" inputmode="decimal" onkeyup="valFloat(this)"disabled>
+                <label for="edtVclLarg">Largura</label>
+                <input type="text" class="only-view" id="edtVclLarg" maxlength="10" onfocus="this.select();" inputmode="decimal" onkeyup="valFloat(this)" disabled>
+                <label for="edtVclComp">Comprimento</label>
+                <input type="text" class="only-view" id="edtVclComp" maxlength="10" onfocus="this.select();" inputmode="decimal" onkeyup="valFloat(this)" disabled>
+                </div>
+                <div class="inline">
+                <label for="edtVclEE">Entre Eixo</label>
+                <input type="text" class="only-view" id="edtVclEE" maxlength="10" onfocus="this.select();" inputmode="decimal" onkeyup="valFloat(this)"disabled>
+                <label for="edtVclPor">Portas</label>
+                <input type="text" class="only-view" id="edtVclPor" maxlength="10" onfocus="this.select();" inputmode="decimal" onkeyup="valInt(this)" disabled>
+                <label for="edtVclPass">Passageiros</label>
+                <input type="text" class="only-view" id="edtVclPass" maxlength="10" onfocus="this.select();" inputmode="decimal" onkeyup="valInt(this)" disabled>
+                </div>                 
+        </div>
+        <div class="frm-cat QDR">
+
+        </div>
+
+        
+
+
+        <div class="line">
+            <button id="btnDel" class="only-view" disabled>Deletar</button>
+            <button id="btnEdit">Editar</button>
+            <button id="btnSave" class="only-view" disabled>Salvar</button>
+        </div>
+    </fieldset>
+
+</template>
+<script>
+    
+    const pageData = main_data.adm_view_item.data
+    const pageFunc = main_data.adm_view_item.func
+    const pageScreen = document.querySelector('#card-adm_view_item')
+    const newItem = Object.keys(pageData).length == 0
+
+    function startPage(){
+        if(newItem){
+            openFields(1)
+            pageScreen.querySelector('#btnDel').disabled = 1
+            pageScreen.querySelector('#btnEdit').disabled = 1
+        }else{
+            pageScreen.querySelector('#edtNome').value = pageData.nome
+
+            pageScreen.querySelector('#btnEdit').disabled = 0
+        }
+    }
+
+    function openFields(open=1){
+        const view = pageScreen.querySelectorAll('.only-view')
+        for(let i=0; i<view.length; i++){
+            view[i].disabled = !open
+        }
+    }
+
+    pageScreen.querySelector('#btnBuscaAcervo'),addEventListener('click',()=>{
+        openHTML('busca_acervo.html','pop-up','Selecione o Acervo',{'org':'adm_view_item'},600)
+    })
+
+    pageScreen.querySelector('#cmbCat').addEventListener('change',()=>{
+        const cat = pageScreen.querySelector('#cmbCat').value
+        const frm = document.querySelectorAll('.frm-cat')
+        for(let i=0; i<frm.length; i++){
+            frm[i].style.display =  frm[i].classList[1] == cat ? 'block' : 'none'
+        }
+    })
+
+
+
+/*
+    pageFunc.setAcervo = ()=>{
+        if(checkField(['edtNome'])){
+            const params = new Object;
+                params.id = newAcervo ? 0 : pageData.id
+                params.nome = pageScreen.querySelector('#edtNome').value.trim()
+                params.lat = pageScreen.querySelector('#edtLat').value
+                params.lon = pageScreen.querySelector('#edtLon').value
+                params.pais = pageScreen.querySelector('#edtPais').value.trim()
+                params.uf = pageScreen.querySelector('#cmbUF').value.trim()
+                params.cidade = pageScreen.querySelector('#edtCidade').value.trim()
+                params.rua = pageScreen.querySelector('#edtEnd').value.trim()
+                params.num = pageScreen.querySelector('#edtNum').value.trim()
+                params.comp = pageScreen.querySelector('#edtComp').value.trim()
+                params.bairro = pageScreen.querySelector('#edtBairro').value.trim()
+                params.tel = pageScreen.querySelector('#edtTel').value.trim()
+                params.email = pageScreen.querySelector('#edtMail').value.trim()
+                params.obs = pageScreen.querySelector('#edtObs').value.trim()
+                params.cep = pageScreen.querySelector('#edtCEP').value.trim()
+            const myPromisse = queryDB(params,'ACE-1');
+            myPromisse.then((resolve)=>{
+                setLog(`Acervo ${newAcervo?'Cadastrado':'Editado'} ${ !newAcervo ? pageData.nome :''} -> ${params.nome}`)
+                try{
+                    main_data.adm_acervo.func.fillAcervo()
+                }catch{
+                    console.error('Tela fechada pelo usuário!')
+                }
+                alert('Cadastrado efetuado!')
+                closeModal('adm_view_acervo')
+            })
+        }
+    }
+
+    pageFunc.delAcervo = ()=>{
+        if(confirm('Deseja realmente deletar este Acervo?')){
+            const params = new Object;
+                params.id = pageData.id
+                params.nome = ''
+            
+            const myPromisse = queryDB(params,'ACE-1');
+            myPromisse.then((resolve)=>{
+                try{
+                    main_data.adm_acervo.func.fillAcervo()
+                }catch{
+                    console.error('Tela fechada pelo usuário!')
+                }
+                setLog(`Acervo Deletado -> ${pageData.nome}`)
+                closeModal('adm_view_acervo')
+            })
+        }
+    }
+
+    pageScreen.querySelector('#btnSave').addEventListener('click',()=>{
+        pageFunc.setAcervo()
+    })
+
+    pageScreen.querySelector('#btnDel').addEventListener('click',()=>{
+        pageFunc.delAcervo()
+    })
+*/
+    pageScreen.querySelector('#btnEdit').addEventListener('click',()=>{
+        if(pageScreen.querySelector('#btnSave').disabled){
+            if(confirm('Abrir registro para edição?')){
+                openFields(1)
+            }
+        }else{
+            openFields(0)
+        }
+    })
+
+    startPage()
+
+</script>

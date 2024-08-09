@@ -25,9 +25,10 @@
         "SYS-0"  => 'CALL sp_set_usr_perm_perf(@access,@hash,x00,"x01");', // ID, NOME
         "SYS-1"  => 'CALL sp_view_usr_perm_perf(@access,@hash,"x00","x01","x02");', // FIELD,SIGNAL, VALUE
 
-        /* MUSEU */
-        "MUS-0"  => 'CALL sp_view_museu(@access,@hash,"x00","x01","x02");', // FIELD, SIGNAL, VALUE
-        "MUS-1"  => 'CALL sp_set_museu(@access,@hash,x00,"x01","x02","x03","x04","x05","x06","x07","x08","x09","x10","x11","x12","x13","x14");', // id,nome,lat,lon,pais,uf,cidade,rua,num,comp,bairro,tel,email,obs,cep
+        /* ACERVO */
+        "ACE-0"  => 'CALL sp_view_acervo(@access,@hash,"x00","x01","x02");', // FIELD, SIGNAL, VALUE
+        "ACE-1"  => 'CALL sp_set_acervo(@access,@hash,x00,"x01","x02","x03","x04","x05","x06","x07","x08","x09","x10","x11","x12","x13","x14");', // id,nome,lat,lon,pais,uf,cidade,rua,num,comp,bairro,tel,email,obs,cep
+        "ACE-2"  => 'CALL sp_view_itens(@access,@hash,"x00","x01","x02");', // FIELD, SIGNAL, VALUE
 
     );
 

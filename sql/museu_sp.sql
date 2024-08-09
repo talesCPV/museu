@@ -297,11 +297,11 @@ DELIMITER $$
 	END $$
 DELIMITER ;
 
-/* MUSEU */
+/* ACERVO */
 
- DROP PROCEDURE sp_view_museu;
+ DROP PROCEDURE sp_view_acervo;
 DELIMITER $$
-	CREATE PROCEDURE sp_view_museu(
+	CREATE PROCEDURE sp_view_acervo(
 		IN Iallow varchar(80),
 		IN Ihash varchar(64),
 		IN Ifield varchar(30),
@@ -311,16 +311,16 @@ DELIMITER $$
 	BEGIN    
 		CALL sp_allow(Iallow,Ihash);
 		IF(@allow)THEN
-			SET @quer =CONCAT('SELECT * FROM tb_museu WHERE ',Ifield,' ',Isignal,' ',Ivalue,' ORDER BY ',Ifield,';');
+			SET @quer =CONCAT('SELECT * FROM tb_acervo WHERE ',Ifield,' ',Isignal,' ',Ivalue,' ORDER BY ',Ifield,';');
 			PREPARE stmt1 FROM @quer;
 			EXECUTE stmt1;
         END IF;
 	END $$
 DELIMITER ;
 
- DROP PROCEDURE sp_set_museu;
+ DROP PROCEDURE sp_set_acervo;
 DELIMITER $$
-	CREATE PROCEDURE sp_set_museu(	
+	CREATE PROCEDURE sp_set_acervo(	
 		IN Iallow varchar(80),
 		IN Ihash varchar(64),
         IN Iid int(11),
@@ -343,18 +343,37 @@ DELIMITER $$
 		CALL sp_allow(Iallow,Ihash);
 		IF(@allow)THEN
 			IF(Iid=0)THEN
-				INSERT INTO tb_museu (id,nome,lat,lon,pais,uf,cidade,rua,num,comp,bairro,tel,email,obs,cep)
+				INSERT INTO tb_acervo (id,nome,lat,lon,pais,uf,cidade,rua,num,comp,bairro,tel,email,obs,cep)
 				VALUES (Iid,Inome,Ilat,Ilon,Ipais,Iuf,Icidade,Irua,Inum,Icomp,Ibairro,Itel,Iemail,Iobs,Icep);
             ELSE 
 				IF(Inome="")THEN
-					DELETE FROM tb_museu WHERE id=Iid;
+					DELETE FROM tb_acervo WHERE id=Iid;
 				ELSE
-					UPDATE tb_museu
+					UPDATE tb_acervo
 					SET nome=Inome,lat=Ilat,lon=Ilon,pais=Ipais,uf=Iuf,cidade=Icidade,rua=Irua,
                     num=Inum,comp=Icomp,bairro=Ibairro,tel=Itel,email=Iemail,obs=Iobs,cep=Icep
 					WHERE id=Iid;
 				END IF;
             END IF;
+        END IF;
+	END $$
+DELIMITER ;
+
+ DROP PROCEDURE sp_view_itens;
+DELIMITER $$
+	CREATE PROCEDURE sp_view_itens(
+		IN Iallow varchar(80),
+		IN Ihash varchar(64),
+		IN Ifield varchar(30),
+        IN Isignal varchar(4),
+		IN Ivalue varchar(50)
+    )
+	BEGIN    
+		CALL sp_allow(Iallow,Ihash);
+		IF(@allow)THEN
+			SET @quer =CONCAT('SELECT * FROM vw_itens WHERE ',Ifield,' ',Isignal,' ',Ivalue,' ORDER BY ',Ifield,';');
+			PREPARE stmt1 FROM @quer;
+			EXECUTE stmt1;
         END IF;
 	END $$
 DELIMITER ;

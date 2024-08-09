@@ -1,0 +1,68 @@
+
+<template>
+    <style>
+
+    </style>
+
+        <fieldset class="fds-busca itens">
+            <legend>Filtro</legend>
+            <div class="inline">
+                <label for="edtBusca">por:</label>
+                <select id="cmbBusca">
+                    <option value="id" signal="IN">Código</option>
+                    <option value="nome" signal="LIKE" selected>Nome</option>
+                    <option value="acervo" signal="LIKE" >Acervo</option>
+                </select>
+                <input type="text" id="edtBusca" onkeypress="return getEnter(event, 'btnBusca')">
+                <button id="btnBusca" class="btn-round" ><span class="mdi mdi-magnify"></span></button>
+                <button id="btnNovo" class="btn-round"><span class="mdi mdi-plus-thick"></span></button>            
+            </div>
+
+            <table id="tblItens"></table>
+        </fieldset>
+    
+</template>
+<script>
+  
+    const pageData = main_data.adm_itens.data
+    const pageFunc = main_data.adm_itens.func
+    const pageScreen = document.querySelector('#card-adm_itens')
+
+    pageFunc.fillItens = ()=>{      
+        const tbl = pageScreen.querySelector('#tblItens')
+        tbl.innerHTML = ''
+        const query = getVal('itens')
+        const params = new Object;
+            params.field = query[0]
+            params.signal = query[1]
+            params.value = query[2]
+        const myPromisse = queryDB(params,'ACE-2');
+        myPromisse.then((resolve)=>{
+            const json = JSON.parse(resolve)
+            tbl.style.display = json.length > 0 ? 'inline-table' : 'none'
+            tbl.head('Acervo,Item,Tipo')
+            for(let i=0; i<json.length;i++){
+                tbl.plot(json[i],'acervo,nome,cat','Upp,Upp,Upp')
+            }         
+        });
+    }
+
+    pageScreen.querySelector('#btnBusca').addEventListener('click',()=>{
+        pageFunc.fillItens()
+    })
+
+    pageScreen.querySelector('#btnNovo').addEventListener('click',()=>{
+        openHTML('adm_view_item.html','pop-up','Novo Ítem')
+    })
+
+    pageScreen.querySelector('#tblItens').addEventListener('click',(e)=>{
+        try{
+            if(main_data.hasOwnProperty('adm_view_item')){
+                closeModal('adm_view_item')
+            }
+            data = e.target.parentNode.data
+            data != undefined ? openHTML('adm_view_item.html','pop-up',`Edição de dados - ${data.nome.toUpperCase()}`,data) : null
+       }catch{null}
+    })
+
+</script>

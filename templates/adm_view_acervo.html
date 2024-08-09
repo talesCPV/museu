@@ -14,7 +14,7 @@
     </style>
   
     <fieldset class="frm" >
-        <legend>Museu</legend>
+        <legend>Acervo</legend>
 
         <div class="inline">
             <label for="edtRazSoc">Nome *</label>
@@ -22,9 +22,9 @@
         </div>
         <div class="inline">
             <label for="edtLat">Latitude</label>
-            <input type="text" class="only-view" id="edtLat" maxlength="10" onfocus="this.select();" onkeyup="valFloat(this,6)" disabled>
+            <input type="text" class="only-view" id="edtLat" maxlength="10" inputmode="decimal" onfocus="this.select();" onkeyup="valFloat(this,6)" disabled>
             <label for="edtLon">Longitude</label>
-            <input type="text" class="only-view" id="edtLon" maxlength="10" onfocus="this.select();" onkeyup="valFloat(this,6)" disabled>
+            <input type="text" class="only-view" id="edtLon" maxlength="10" inputmode="decimal" onfocus="this.select();" onkeyup="valFloat(this,6)" disabled>
         </div>
         <div class="inline">
             <label for="edtEnd">Endereço</label>
@@ -38,7 +38,7 @@
         </div>
         <div class="inline">
             <label for="edtPais">País</label>
-            <input type="text" class="only-view" id="edtPais" maxlength="25" disabled>
+            <input type="text" class="only-view" id="edtPais" maxlength="25" style="width: 350px;" value="Brasil" disabled>
             <label for="edtCidade">Cidade</label>
             <input type="text" class="only-view" id="edtCidade" maxlength="60" disabled>
             <label for="cmbUF">Estado</label> 
@@ -85,7 +85,7 @@
         </div>
         <div class="inline">
             <label for="edtObs">Obs:</label>
-            <textarea id="edtObs"></textarea>
+            <textarea id="edtObs" rows="5"></textarea>
         </div>
 
         <div class="line">
@@ -98,13 +98,13 @@
 </template>
 <script>
     
-    const pageData = main_data.adm_view_museu.data
-    const pageFunc = main_data.adm_view_museu.func
-    const pageScreen = document.querySelector('#card-adm_view_museu')
-    const newMuseu = Object.keys(pageData).length == 0
+    const pageData = main_data.adm_view_acervo.data
+    const pageFunc = main_data.adm_view_acervo.func
+    const pageScreen = document.querySelector('#card-adm_view_acervo')
+    const newAcervo = Object.keys(pageData).length == 0
 
     function startPage(){
-        if(newMuseu){
+        if(newAcervo){
             openFields(1)
             pageScreen.querySelector('#btnDel').disabled = 1
             pageScreen.querySelector('#btnEdit').disabled = 1
@@ -117,7 +117,7 @@
             pageScreen.querySelector('#edtComp').value = pageData.comp
             pageScreen.querySelector('#edtPais').value = pageData.pais
             pageScreen.querySelector('#edtCidade').value = pageData.cidade
-            pageScreen.querySelector('#cmbUF').value = pageData.estado
+            pageScreen.querySelector('#cmbUF').value = pageData.uf
             pageScreen.querySelector('#edtBairro').value = pageData.bairro
             pageScreen.querySelector('#edtCEP').value = pageData.cep
             pageScreen.querySelector('#edtTel').value = pageData.tel
@@ -133,63 +133,64 @@
             view[i].disabled = !open
         }
     }
-// id,nome,lat,lon,pais,uf,cidade,rua,num,comp,bairro,tel,email,obs,cep
-    pageFunc.setMuseu = ()=>{
-        const params = new Object;
-            params.id = newMuseu ? 0 : pageData.id
-            params.nome = pageScreen.querySelector('#edtNome').value.trim()
-            params.lat = pageScreen.querySelector('#edtLat').value
-            params.lon = pageScreen.querySelector('#edtLon').value
-            params.pais = pageScreen.querySelector('#edtPais').value.trim()
-            params.uf = pageScreen.querySelector('#cmbUF').value.trim()
-            params.cidade = pageScreen.querySelector('#edtCidade').value.trim()
-            params.rua = pageScreen.querySelector('#edtEnd').value.trim()
-            params.num = pageScreen.querySelector('#edtNum').value.trim()
-            params.comp = pageScreen.querySelector('#edtComp').value.trim()
-            params.bairro = pageScreen.querySelector('#edtBairro').value.trim()
-            params.tel = pageScreen.querySelector('#edtTel').value.trim()
-            params.email = pageScreen.querySelector('#edtMail').value.trim()
-            params.obs = pageScreen.querySelector('#edtObs').value.trim()
-            params.cep = pageScreen.querySelector('#edtCEP').value.trim()
-          
-        const myPromisse = queryDB(params,'MUS-1');
-        myPromisse.then((resolve)=>{
-            setLog(`Museu ${newMuseu?'Cadastrado':'Editado'} ${ !newMuseu ? pageData.nome :''} -> ${params.nome}`)
-            try{
-                main_data.adm_museu.func.fillMuseu()
-            }catch{
-                console.error('Tela fechada pelo usuário!')
-            }
-            alert('Cadastrado efetuado!')
-            closeModal('adm_view_museu')
-        })
+
+    pageFunc.setAcervo = ()=>{
+        if(checkField(['edtNome'])){
+            const params = new Object;
+                params.id = newAcervo ? 0 : pageData.id
+                params.nome = pageScreen.querySelector('#edtNome').value.trim()
+                params.lat = pageScreen.querySelector('#edtLat').value
+                params.lon = pageScreen.querySelector('#edtLon').value
+                params.pais = pageScreen.querySelector('#edtPais').value.trim()
+                params.uf = pageScreen.querySelector('#cmbUF').value.trim()
+                params.cidade = pageScreen.querySelector('#edtCidade').value.trim()
+                params.rua = pageScreen.querySelector('#edtEnd').value.trim()
+                params.num = pageScreen.querySelector('#edtNum').value.trim()
+                params.comp = pageScreen.querySelector('#edtComp').value.trim()
+                params.bairro = pageScreen.querySelector('#edtBairro').value.trim()
+                params.tel = pageScreen.querySelector('#edtTel').value.trim()
+                params.email = pageScreen.querySelector('#edtMail').value.trim()
+                params.obs = pageScreen.querySelector('#edtObs').value.trim()
+                params.cep = pageScreen.querySelector('#edtCEP').value.trim()
+            const myPromisse = queryDB(params,'ACE-1');
+            myPromisse.then((resolve)=>{
+                setLog(`Acervo ${newAcervo?'Cadastrado':'Editado'} ${ !newAcervo ? pageData.nome :''} -> ${params.nome}`)
+                try{
+                    main_data.adm_acervo.func.fillAcervo()
+                }catch{
+                    console.error('Tela fechada pelo usuário!')
+                }
+                alert('Cadastrado efetuado!')
+                closeModal('adm_view_acervo')
+            })
+        }
     }
 
-    pageFunc.delMuseu = ()=>{
-        if(confirm('Deseja realmente deletar este Museu?')){
+    pageFunc.delAcervo = ()=>{
+        if(confirm('Deseja realmente deletar este Acervo?')){
             const params = new Object;
                 params.id = pageData.id
                 params.nome = ''
             
-            const myPromisse = queryDB(params,'MUS-1');
+            const myPromisse = queryDB(params,'ACE-1');
             myPromisse.then((resolve)=>{
                 try{
-                    main_data.adm_museu.func.fillMuseu()
+                    main_data.adm_acervo.func.fillAcervo()
                 }catch{
                     console.error('Tela fechada pelo usuário!')
                 }
-                setLog(`Museu Deletado -> ${pageData.nome}`)
-                closeModal('adm_view_museu')
+                setLog(`Acervo Deletado -> ${pageData.nome}`)
+                closeModal('adm_view_acervo')
             })
         }
     }
 
     pageScreen.querySelector('#btnSave').addEventListener('click',()=>{
-        pageFunc.setMuseu()
+        pageFunc.setAcervo()
     })
 
     pageScreen.querySelector('#btnDel').addEventListener('click',()=>{
-        pageFunc.delMuseu()
+        pageFunc.delAcervo()
     })
 
     pageScreen.querySelector('#btnEdit').addEventListener('click',()=>{

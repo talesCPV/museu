@@ -56,10 +56,10 @@ CREATE TABLE tb_calendario (
     PRIMARY KEY (id_user,data_agd)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
-/* MUSEU */
+/* ACERVO */
 
- DROP TABLE tb_museu;
-CREATE TABLE tb_museu (
+ DROP TABLE tb_acervo;
+CREATE TABLE tb_acervo (
     id int(11) NOT NULL AUTO_INCREMENT,
     nome varchar(90) NOT NULL,
     lat double DEFAULT NULL,
@@ -76,4 +76,38 @@ CREATE TABLE tb_museu (
     obs varchar(255) DEFAULT NULL,
     cep varchar(8) DEFAULT NULL,
     PRIMARY KEY (id)
+) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+ DROP TABLE tb_item;
+CREATE TABLE tb_item (
+    id int(11) NOT NULL AUTO_INCREMENT,
+    id_acervo int(11) NOT NULL,
+    nome varchar(90) NOT NULL,
+	cat varchar(3) NOT NULL,
+    obs varchar(255) DEFAULT NULL,
+    FOREIGN KEY (id_acervo) REFERENCES tb_acervo(id),
+    PRIMARY KEY (id)
+) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+ DROP TABLE tb_tipo_veiculo;
+CREATE TABLE tb_tipo_veiculo (
+    id_veiculo int(11) NOT NULL AUTO_INCREMENT,
+    id_item int(11) NOT NULL,
+	pais varchar(25) DEFAULT NULL,
+    marca varchar(20) DEFAULT NULL,
+	ano varchar(4) DEFAULT NULL,
+    modelo varchar(30) DEFAULT NULL,
+    tipo varchar(20) DEFAULT NULL,
+    cor varchar(15) DEFAULT NULL,
+    cilindros int DEFAULT NULL,
+    cilindada double DEFAULT NULL,
+    potencia double DEFAULT NULL,    
+    altura double DEFAULT NULL,
+    largura double DEFAULT NULL,
+    comprimento double DEFAULT NULL,
+    entre_eixo double DEFAULT NULL,
+    portas int DEFAULT NULL,
+    passageiros int DEFAULT NULL,
+	FOREIGN KEY (id_item) REFERENCES tb_item(id),
+    PRIMARY KEY (id_veiculo)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;

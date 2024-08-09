@@ -4,8 +4,8 @@
 
     </style>
 
-        <fieldset class="fds-busca museu">
-            <legend>Busca</legend>
+        <fieldset class="fds-busca acervo">
+            <legend>Filtro</legend>
             <div class="inline">
                 <label for="edtBusca">por:</label>
                 <select id="cmbBusca">
@@ -20,25 +20,25 @@
                 <button id="btnNovo" class="btn-round"><span class="mdi mdi-plus-thick"></span></button>            
             </div>
 
-            <table id="tblMuseu"></table>
+            <table id="tblAcervo"></table>
         </fieldset>
     
 </template>
 <script>
   
-    const pageData = main_data.adm_museu.data
-    const pageFunc = main_data.adm_museu.func
-    const pageScreen = document.querySelector('#card-adm_museu')
+    const pageData = main_data.adm_acervo.data
+    const pageFunc = main_data.adm_acervo.func
+    const pageScreen = document.querySelector('#card-adm_acervo')
 
-    pageFunc.fillMuseu = ()=>{      
-        const tbl = pageScreen.querySelector('#tblMuseu')
+    pageFunc.fillAcervo = ()=>{      
+        const tbl = pageScreen.querySelector('#tblAcervo')
         tbl.innerHTML = ''
-        const query = getVal('museu')
+        const query = getVal('acervo')
         const params = new Object;
             params.field = query[0]
             params.signal = query[1]
             params.value = query[2]
-        const myPromisse = queryDB(params,'MUS-0');
+        const myPromisse = queryDB(params,'ACE-0');
         myPromisse.then((resolve)=>{
             const json = JSON.parse(resolve)
             tbl.style.display = json.length > 0 ? 'inline-table' : 'none'
@@ -50,20 +50,20 @@
     }
 
     pageScreen.querySelector('#btnBusca').addEventListener('click',()=>{
-        pageFunc.fillMuseu()
+        pageFunc.fillAcervo()
     })
 
     pageScreen.querySelector('#btnNovo').addEventListener('click',()=>{
-        openHTML('adm_view_museu.html','pop-up','Novo Museu')
+        openHTML('adm_view_acervo.html','pop-up','Novo Acervo')
     })
 
-    pageScreen.querySelector('#tblMuseu').addEventListener('click',(e)=>{
+    pageScreen.querySelector('#tblAcervo').addEventListener('click',(e)=>{
         try{
-            if(main_data.hasOwnProperty('adm_view_museu')){
-                closeModal('adm_view_museu')
+            if(main_data.hasOwnProperty('adm_view_acervo')){
+                closeModal('adm_view_acervo')
             }
             data = e.target.parentNode.data
-            data != undefined ? openHTML('adm_view_museu.html','pop-up',`Edição de dados - ${data.nome.toUpperCase()}`,data) : null
+            data != undefined ? openHTML('adm_view_acervo.html','pop-up',`Edição de dados - ${data.nome.toUpperCase()}`,data) : null
        }catch{null}
     })
 
