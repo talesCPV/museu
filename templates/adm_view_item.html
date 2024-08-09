@@ -21,9 +21,9 @@
             <input type="text" class="only-view" id="edtNome" maxlength="90" disabled>
         </div>
         <div class="inline">
-            <label for="cmbAcervo">Acervo*</label>
+            <label for="edtAcervo">Acervo*</label>
             <div class="edtbtn">
-                <input type="text" id="edtBuscaAcervo" readonly>
+                <input type="text" id="edtAcervo" readonly>
                 <button id="btnBuscaAcervo" class="only-view btn-round" disabled><span class="mdi mdi-magnify"></span></button>
             </div>
         </div>        
@@ -124,7 +124,7 @@
         }
     }
 
-    pageScreen.querySelector('#btnBuscaAcervo'),addEventListener('click',()=>{
+    pageScreen.querySelector('#btnBuscaAcervo').addEventListener('click',()=>{
         openHTML('busca_acervo.html','pop-up','Selecione o Acervo',{'org':'adm_view_item'},600)
     })
 
@@ -136,68 +136,74 @@
         }
     })
 
+    pageFunc.buscaAcervo = (data)=>{
+        pageScreen.querySelector('#edtAcervo').value = data.nome
+        pageScreen.querySelector('#edtAcervo').data = data
+    }
 
 
-/*
-    pageFunc.setAcervo = ()=>{
-        if(checkField(['edtNome'])){
+    pageFunc.setItens = ()=>{
+        if(checkField(['edtNome','edtAcervo'])){
             const params = new Object;
-                params.id = newAcervo ? 0 : pageData.id
+                params.id = newItem ? 0 : pageData.id
+                params.id_acervo = pageScreen.querySelector('#edtAcervo').data.id
                 params.nome = pageScreen.querySelector('#edtNome').value.trim()
-                params.lat = pageScreen.querySelector('#edtLat').value
-                params.lon = pageScreen.querySelector('#edtLon').value
-                params.pais = pageScreen.querySelector('#edtPais').value.trim()
-                params.uf = pageScreen.querySelector('#cmbUF').value.trim()
-                params.cidade = pageScreen.querySelector('#edtCidade').value.trim()
-                params.rua = pageScreen.querySelector('#edtEnd').value.trim()
-                params.num = pageScreen.querySelector('#edtNum').value.trim()
-                params.comp = pageScreen.querySelector('#edtComp').value.trim()
-                params.bairro = pageScreen.querySelector('#edtBairro').value.trim()
-                params.tel = pageScreen.querySelector('#edtTel').value.trim()
-                params.email = pageScreen.querySelector('#edtMail').value.trim()
-                params.obs = pageScreen.querySelector('#edtObs').value.trim()
-                params.cep = pageScreen.querySelector('#edtCEP').value.trim()
-            const myPromisse = queryDB(params,'ACE-1');
+                params.cat = pageScreen.querySelector('#cmbCat').value
+                params.obs = pageScreen.querySelector('#edtDesc').value.trim()
+                let query = 'ACE-3'
+                switch(params.cat){
+                    case 'VCL':
+                        params.pais = pageScreen.querySelector('#edtVclPais').value.trim()
+                        params.marca = pageScreen.querySelector('#edtVclMarca').value.trim()
+                        params.ano = pageScreen.querySelector('#edtVclAno').value.trim()
+                        params.modelo = pageScreen.querySelector('#edtVclModelo').value.trim()
+                        params.tipo = pageScreen.querySelector('#edtVclTipo').value.trim()
+                        params.cor = pageScreen.querySelector('#edtVclCor').value.trim()
+                        params.cilindros = pageScreen.querySelector('#edtVclCil').value.trim()
+                        params.cilindradas = pageScreen.querySelector('#edtVclCdd').value.trim()
+                        params.potHP = pageScreen.querySelector('#edtVclPotHP').value.trim()
+                        params.alt = pageScreen.querySelector('#edtVclAlt').value.trim()
+                        params.larg = pageScreen.querySelector('#edtVclLarg').value.trim()
+                        params.comp = pageScreen.querySelector('#edtVclComp').value.trim()
+                        params.e_eixo = pageScreen.querySelector('#edtVclEE').value.trim()
+                        params.portas = pageScreen.querySelector('#edtVclPor').value.trim()                        
+                        params.passageiros = pageScreen.querySelector('#edtVclPass').value.trim()
+                        query = 'ACE-3'
+                        break
+                    case 'QDR':
+                        query = 'ACE-4'
+                        break
+                }
+
+            const myPromisse = queryDB(params,query);
             myPromisse.then((resolve)=>{
-                setLog(`Acervo ${newAcervo?'Cadastrado':'Editado'} ${ !newAcervo ? pageData.nome :''} -> ${params.nome}`)
+                setLog(`Item ${newItem?'Cadastrado':'Editado'} ${ !newItem ? pageData.nome+' ->' :''} ${params.nome}, ${params.cat}`)
                 try{
-                    main_data.adm_acervo.func.fillAcervo()
+                    main_data.adm_itens.func.fillItens()
                 }catch{
                     console.error('Tela fechada pelo usuário!')
                 }
                 alert('Cadastrado efetuado!')
-                closeModal('adm_view_acervo')
+                closeModal('adm_view_item')
             })
         }
     }
 
-    pageFunc.delAcervo = ()=>{
-        if(confirm('Deseja realmente deletar este Acervo?')){
-            const params = new Object;
-                params.id = pageData.id
-                params.nome = ''
-            
-            const myPromisse = queryDB(params,'ACE-1');
-            myPromisse.then((resolve)=>{
-                try{
-                    main_data.adm_acervo.func.fillAcervo()
-                }catch{
-                    console.error('Tela fechada pelo usuário!')
-                }
-                setLog(`Acervo Deletado -> ${pageData.nome}`)
-                closeModal('adm_view_acervo')
-            })
+    pageFunc.delItem= ()=>{
+        if(confirm('Deseja realmente deletar este Ítem?')){
+            pageScreen.querySelector('#edtNome').value = ''
+            pageFunc.setItens()
         }
     }
 
     pageScreen.querySelector('#btnSave').addEventListener('click',()=>{
-        pageFunc.setAcervo()
+        pageFunc.setItens()
     })
 
     pageScreen.querySelector('#btnDel').addEventListener('click',()=>{
-        pageFunc.delAcervo()
+        pageFunc.delItem()
     })
-*/
+
     pageScreen.querySelector('#btnEdit').addEventListener('click',()=>{
         if(pageScreen.querySelector('#btnSave').disabled){
             if(confirm('Abrir registro para edição?')){

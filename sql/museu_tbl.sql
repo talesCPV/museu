@@ -89,8 +89,8 @@ CREATE TABLE tb_item (
     PRIMARY KEY (id)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
- DROP TABLE tb_tipo_veiculo;
-CREATE TABLE tb_tipo_veiculo (
+ DROP TABLE tb_item_vcl;
+CREATE TABLE tb_item_vcl (
     id_veiculo int(11) NOT NULL AUTO_INCREMENT,
     id_item int(11) NOT NULL,
 	pais varchar(25) DEFAULT NULL,
@@ -101,13 +101,13 @@ CREATE TABLE tb_tipo_veiculo (
     cor varchar(15) DEFAULT NULL,
     cilindros int DEFAULT NULL,
     cilindada double DEFAULT NULL,
-    potencia double DEFAULT NULL,    
-    altura double DEFAULT NULL,
-    largura double DEFAULT NULL,
-    comprimento double DEFAULT NULL,
+    pot_hp double DEFAULT NULL,    
+    alt double DEFAULT NULL,
+    larg double DEFAULT NULL,
+    comp double DEFAULT NULL,
     entre_eixo double DEFAULT NULL,
     portas int DEFAULT NULL,
-    passageiros int DEFAULT NULL,
+    lugares int DEFAULT NULL,
 	FOREIGN KEY (id_item) REFERENCES tb_item(id),
     PRIMARY KEY (id_veiculo)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;

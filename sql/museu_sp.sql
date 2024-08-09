@@ -343,8 +343,8 @@ DELIMITER $$
 		CALL sp_allow(Iallow,Ihash);
 		IF(@allow)THEN
 			IF(Iid=0)THEN
-				INSERT INTO tb_acervo (id,nome,lat,lon,pais,uf,cidade,rua,num,comp,bairro,tel,email,obs,cep)
-				VALUES (Iid,Inome,Ilat,Ilon,Ipais,Iuf,Icidade,Irua,Inum,Icomp,Ibairro,Itel,Iemail,Iobs,Icep);
+				INSERT INTO tb_acervo (nome,lat,lon,pais,uf,cidade,rua,num,comp,bairro,tel,email,obs,cep)
+				VALUES (Inome,Ilat,Ilon,Ipais,Iuf,Icidade,Irua,Inum,Icomp,Ibairro,Itel,Iemail,Iobs,Icep);
             ELSE 
 				IF(Inome="")THEN
 					DELETE FROM tb_acervo WHERE id=Iid;
@@ -374,6 +374,56 @@ DELIMITER $$
 			SET @quer =CONCAT('SELECT * FROM vw_itens WHERE ',Ifield,' ',Isignal,' ',Ivalue,' ORDER BY ',Ifield,';');
 			PREPARE stmt1 FROM @quer;
 			EXECUTE stmt1;
+        END IF;
+	END $$
+DELIMITER ;
+
+ DROP PROCEDURE sp_set_item_vcl;
+DELIMITER $$
+	CREATE PROCEDURE sp_set_item_vcl(	
+		IN Iallow varchar(80),
+		IN Ihash varchar(64),
+        IN Iid int(11),
+        IN Iid_acervo int(11),
+		IN Inome varchar(90),
+		IN Icat varchar(3),
+		IN Iobs varchar(255),
+		IN Ipais varchar(25),
+		IN Imarca varchar(20),
+		IN Iano varchar(4),
+		IN Imodelo varchar(30),
+		IN Itipo varchar(20),
+		IN Icor varchar(15),
+		IN Icilindros int,
+		IN Icilindada double,
+		IN Ipot_hp double,
+		IN Ialt double,
+		IN Ilarg double,
+		IN Icomp double,
+		IN Ientre_eixo double,
+		IN Iportas int,
+		IN Ilugares int
+    )
+	BEGIN    
+		CALL sp_allow(Iallow,Ihash);
+		IF(@allow)THEN
+			IF(Iid=0)THEN
+				INSERT INTO tb_item (id_acervo,nome,cat,obs)
+				VALUES (Iid_acervo,Inome,Icat,Iobs);
+                SET @id = (SELECT MAX(id) FROM tb_item);
+                INSERT INTO tb_item_vcl (id_item,pais,marca,ano,modelo,tipo,cor,cilindros,cilindada,pot_hp,alt,larg,comp,entre_eixo,portas,lugares)
+                VALUES(@id,Ipais,Imarca,Iano,Imodelo,Itipo,Icor,Icilindros,Icilindada,Ipot_hp,Ialt,Ilarg,Icomp,Ientre_eixo,Iportas,Ilugares);                
+            ELSE 
+				IF(Inome="")THEN
+					DELETE FROM tb_item WHERE id=Iid;
+                    DELETE FROM tb_item_vcl WHERE id_item=Iid;
+				ELSE
+					UPDATE tb_item SET id_acervo=Iid_acervo,nome=Inome,cat=Icat,obs=Iobs WHERE id=Iid;
+                    UPDATE tb_item_vcl SET pais=Ipais,marca=Imarca,ano=Iano,modelo=Imodelo,tipo=Itipo,cor=Icor,cilindros=Icilindros,cilindada=Icilindada,
+                    pot_hp=Ipot_hp,alt=Ialt,larg=Ilarg,comp=Icomp,entre_eixo=Ientre_eixo,portas=Iportas,lugares=Ilugares
+                    WHERE id_item=Iid;
+				END IF;
+            END IF;
         END IF;
 	END $$
 DELIMITER ;

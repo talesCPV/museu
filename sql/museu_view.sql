@@ -1,12 +1,12 @@
 /* ACERVO ITENS */
 
--- DROP VIEW vw_itens_veiculo;
+ DROP VIEW vw_itens_veiculo;
  CREATE VIEW vw_itens_veiculo AS
     SELECT 
         ITN.*,VCL.*
     FROM
         tb_item AS ITN
-        LEFT JOIN tb_tipo_veiculo AS VCL
+        LEFT JOIN tb_item_vcl AS VCL
         ON VCL.id_item = ITN.id;
         
 SELECT * FROM vw_itens_veiculo;

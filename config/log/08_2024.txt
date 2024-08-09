@@ -20,3 +20,8 @@
 09/08/2024 15:10 adm@museu.com.br : Acervo Cadastrado  -> 
 09/08/2024 15:10 adm@museu.com.br : Acervo Deletado -> 
 09/08/2024 16:09 adm@museu.com.br : Menu Alterado (Itens, adm_itens.html, pop-up, Cadastro de Itens)
+09/08/2024 20:27 adm@museu.com.br : Item Cadastrado  teste, VCL
+09/08/2024 20:28 adm@museu.com.br : Item Cadastrado  teste, VCL
+09/08/2024 20:31 adm@museu.com.br : Item Cadastrado  Studebaker, VCL
+09/08/2024 20:45 adm@museu.com.br : Item Cadastrado  Studebaker Commander, VCL
+09/08/2024 20:52 adm@museu.com.br : Item Cadastrado  Alfa Romeo RL Torpedo 1923, VCL

@@ -40,9 +40,9 @@
         myPromisse.then((resolve)=>{
             const json = JSON.parse(resolve)
             tbl.style.display = json.length > 0 ? 'inline-table' : 'none'
-            tbl.head('Acervo,Item,Tipo')
+            tbl.head('Item,Acervo,Tipo')
             for(let i=0; i<json.length;i++){
-                tbl.plot(json[i],'acervo,nome,cat','Upp,Upp,Upp')
+                tbl.plot(json[i],'nome,acervo,cat','Upp,Upp,cha VCL=Veículo QDR=Quadro')
             }         
         });
     }

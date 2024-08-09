@@ -29,6 +29,7 @@
         "ACE-0"  => 'CALL sp_view_acervo(@access,@hash,"x00","x01","x02");', // FIELD, SIGNAL, VALUE
         "ACE-1"  => 'CALL sp_set_acervo(@access,@hash,x00,"x01","x02","x03","x04","x05","x06","x07","x08","x09","x10","x11","x12","x13","x14");', // id,nome,lat,lon,pais,uf,cidade,rua,num,comp,bairro,tel,email,obs,cep
         "ACE-2"  => 'CALL sp_view_itens(@access,@hash,"x00","x01","x02");', // FIELD, SIGNAL, VALUE
+        "ACE-3"  => 'CALL sp_set_item_vcl(@access,@hash,x00,x01,"x02","x03","x04","x05","x06","x07","x08","x09","x10","x11","x12","x13","x14","x15","x16","x17","x18","x19");', //  id,id_acervo,nome,cat,obs,pais,marca,ano,modelo,tipo,cor,cilindros,cilindada,potencia,alt,larg,comp,entre_eixo,portas,passageiro
 
     );
 
