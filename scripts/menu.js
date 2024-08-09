@@ -135,6 +135,7 @@ function openMenu(){
                             shortcut.janela = obj[i].janela
                             shortcut.label = obj[i].label
                             shortcut.width = obj[i].width
+                            shortcut.access = obj[i].access
                             shortcut.x = 100
                             shortcut.y = 100
                             json.push(shortcut)
