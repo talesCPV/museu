@@ -65,3 +65,11 @@
 10/08/2024 19:14 adm@museu.com.br : Imagem Adicionada -> : Novo Polo
 10/08/2024 19:15 adm@museu.com.br : Imagem Adicionada -> : Novo Polo
 10/08/2024 19:34 adm@museu.com.br : Imagem Adicionada -> : Novo Polo
+10/08/2024 23:12 adm@museu.com.br : Menu Deletado (Ferramentas)
+10/08/2024 23:13 adm@museu.com.br : Menu Incluido (Tokens)
+10/08/2024 23:14 adm@museu.com.br : Menu Alterado (Tokens, sys_token.html, pop-up, Tokens de Acesso)
+10/08/2024 23:57 adm@museu.com.br : Item Cadastrado  2024-08-3100:00:00, Acervo:3
+10/08/2024 23:58 adm@museu.com.br : Item Cadastrado  00:00:00, Acervo:3
+11/08/2024 00:01 adm@museu.com.br : Item Cadastrado  2024-08-3000:00:00, Acervo:3
+11/08/2024 00:17 adm@museu.com.br : Item Cadastrado  30, Acervo:3
+11/08/2024 00:18 adm@museu.com.br : Item Cadastrado  30, Acervo:3

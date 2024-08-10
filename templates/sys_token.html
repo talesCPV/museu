@@ -1,0 +1,40 @@
+<template>
+    <style>
+
+     
+    </style>
+
+    <fieldset>
+        <legend>Tokens</legend>
+        <button id="btnNovo" class="btn-round"><span class="mdi mdi-plus-thick"></span></button>        
+        <table id="tblToken"></table>
+    </fieldset>
+
+
+</template>
+<script>
+
+    const pageData = main_data.sys_token.data
+    const pageFunc = main_data.sys_token.func
+    const pageScreen = document.querySelector('#card-sys_token')
+
+    pageFunc.fillTokens = ()=>{
+        const tbl = pageScreen.querySelector('#tblToken')
+        tbl.innerHTML = ''
+        const myPromisse = queryDB({},'ACC-0');
+        myPromisse.then((resolve)=>{
+            const json = JSON.parse(resolve)
+            tbl.head('Dono,Acervo,Expira,Ler,Criar,Alterar,Deletar')
+            for(let i=0; i<json.length; i++){
+                tbl.plot(json[i],'owner,acervo,expira_em,ler,criar,alterar,deletar','str,Upp,dat,str,str,str,str')
+            }
+        });
+    }
+
+    pageScreen.querySelector('#btnNovo').addEventListener('click',()=>{
+        openHTML('sys_view_token.html','pop-up','Novo Acesso Remoto')
+    })
+
+    pageFunc.fillTokens()
+
+</script>

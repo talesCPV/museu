@@ -46,9 +46,9 @@ DELIMITER $$
             SET @criado = (SELECT CURRENT_TIMESTAMP());
             SET @expira = (SELECT CURRENT_TIMESTAMP()+ INTERVAL Iexpira_em DAY);            
             IF(Itoken="")THEN
-				SET @token = (SELECT SHA2(CONCAT(id_acervo, @id_call,@criado+0), 256) );
-				INSERT INTO tb_acesso (id_owner,id_acervo,token,criado_em,expira_em,ler,criar,alterar,deletar)
-                VALUES (@id_call,Iid_acervo,@token,@criado,@expira,Iler,Icriar,Ialterar,Ideletar);
+				SET @token = (SELECT SHA2(CONCAT(Iid_acervo, @id_call,@criado+0), 256) );
+				INSERT INTO tb_acesso (id_owner,token,id_acervo,criado_em,expira_em,ler,criar,alterar,deletar)
+                VALUES (@id_call,@token,Iid_acervo,@criado,@expira,Iler,Icriar,Ialterar,Ideletar);
 			ELSE 
 				SET @id_owner = (SELECT id_owner FROM tb_acesso WHERE token COLLATE utf8_general_ci = Itoken COLLATE utf8_general_ci LIMIT 1);
 				IF(@id_call=@id_owner)THEN
@@ -61,6 +61,24 @@ DELIMITER $$
 					END IF;
                 END IF;
             END IF;
+        END IF;
+	END $$
+DELIMITER ;
+
+ DROP PROCEDURE sp_view_tokens;
+DELIMITER $$
+	CREATE PROCEDURE sp_view_tokens(
+		IN Iallow varchar(80),
+        IN Ihash varchar(64)
+    )
+	BEGIN    
+		CALL sp_allow(Iallow,Ihash);
+		IF(@allow)THEN
+			SET @today = (SELECT CURRENT_TIMESTAMP());
+            DELETE FROM tb_acesso WHERE expira_em < @today;
+            
+			SELECT * FROM vw_tokens
+            ORDER BY expira_em DESC;
         END IF;
 	END $$
 DELIMITER ;

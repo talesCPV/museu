@@ -1,0 +1,140 @@
+
+<template>
+    <style>
+        .frm{
+            padding: 10px;
+        }
+
+        @media all and (max-width : 768px) {
+            .frm input, .frm select{
+                width: 98% !important;
+            }
+        }
+
+    </style>
+  
+    <fieldset class="frm" >
+        <legend>Token</legend>
+
+        <div class="inline">
+            <label for="edtAcervo">Acervo*</label>
+            <div class="edtbtn">
+                <input type="text" class="only-view" id="edtAcervo" readonly disabled>
+                <button id="btnBuscaAcervo" class="only-view btn-round" disabled><span class="mdi mdi-magnify"></span></button>
+            </div>
+        </div>
+
+        <div class="inline">
+            <label for="edtVal">Validade(dias)*</label>
+            <input type="text" class="only-view" id="edtVal" maxlength="4" onfocus="this.select();" inputmode="decimal" onkeyup="valInt(this)" value="30" disabled>
+        </div>
+
+        <div class="inline">
+            <label for="ckbLer">Ler</label>
+            <input type="checkbox" id="ckbLer" checked>
+            <label for="ckbAdd">Adicionar</label>
+            <input type="checkbox" id="ckbAdd">
+            <label for="ckbAlt">Alterar</label>
+            <input type="checkbox" id="ckbAlt">
+            <label for="ckbDel">Deletar</label>
+            <input type="checkbox" id="ckbDel">
+        </div>
+
+        <div class="line">
+            <button id="btnEdit">Editar</button>
+            <button id="btnDel" class="only-view" disabled>Deletar</button>
+            <button id="btnSave" class="only-view" disabled>Salvar</button>
+        </div>
+    </fieldset>
+
+</template>
+<script>
+    
+    const pageData = main_data.sys_view_token.data
+    const pageFunc = main_data.sys_view_token.func
+    const pageScreen = document.querySelector('#card-sys_view_token')
+    const newToken = Object.keys(pageData).length == 0
+
+    function startPage(){
+        if(newToken){
+            openFields(1)
+            pageScreen.querySelector('#btnDel').disabled = 1
+            pageScreen.querySelector('#btnEdit').disabled = 1
+
+        }else{
+            pageScreen.querySelector('#edtAcervo').value = pageData.acervo
+            pageScreen.querySelector('#edtAcervo').data = {'id':pageData.id_acervo}
+            pageScreen.querySelector('#edtVal').value = pageData.expira_em
+            pageScreen.querySelector('#ckbLer').checked = parseInt(pageData.ler)
+            pageScreen.querySelector('#ckbAdd').checked = parseInt(pageData.criar)
+            pageScreen.querySelector('#ckbAlt').checked = parseInt(pageData.alterar)
+            pageScreen.querySelector('#ckbDel').checked = parseInt(pageData.deletar)
+
+            pageScreen.querySelector('#btnEdit').disabled = 0
+        }
+    }
+
+    function openFields(open=1){
+        const view = pageScreen.querySelectorAll('.only-view')
+        for(let i=0; i<view.length; i++){
+            view[i].disabled = !open
+        }
+    }
+
+    pageScreen.querySelector('#btnBuscaAcervo').addEventListener('click',()=>{
+        openHTML('busca_acervo.html','pop-up','Selecione o Acervo',{'org':'sys_view_token'},600)
+    })
+
+    pageFunc.buscaAcervo = (data)=>{
+        pageScreen.querySelector('#edtAcervo').value = data.nome
+        pageScreen.querySelector('#edtAcervo').data = data
+    }
+
+    pageFunc.setToken = (del=0)=>{
+        if(checkField(['edtAcervo'])){
+            const params = new Object;
+                params.token = newToken ? '' : pageData.token
+                params.id_acervo = del ? 0 : pageScreen.querySelector('#edtAcervo').data.id
+                params.expira_em = pageScreen.querySelector('#edtVal').value
+                params.ler = pageScreen.querySelector('#ckbLer').checked ? 1 : 0
+                params.criar = pageScreen.querySelector('#ckbAdd').checked ? 1 : 0
+                params.alterar = pageScreen.querySelector('#ckbAlt').checked ? 1 : 0
+                params.deletar = pageScreen.querySelector('#ckbDel').checked ? 1 : 0
+
+            const myPromisse = queryDB(params,'ACC-1');
+            myPromisse.then((resolve)=>{
+                setLog(`Item ${newToken?'Cadastrado':del ? 'Deletado' : 'Editado'} ${ !newToken ? pageData.expira_em+' ->' :''} ${params.expira_em}, Acervo:${params.id_acervo}`)
+                try{
+                    main_data.sys_token.func.fillTokens()
+                }catch{
+                    console.error('Tela fechada pelo usuário!')
+                }
+                alert('Cadastrado efetuado!')
+                closeModal('sys_view_token')
+            })
+        }
+    }
+
+    pageScreen.querySelector('#btnSave').addEventListener('click',()=>{
+        pageFunc.setToken()
+    })
+
+    pageScreen.querySelector('#btnDel').addEventListener('click',()=>{
+        if(confirm('Deseja realmente remover este acesso?')){            
+            pageFunc.setToken(1)
+        }
+    })
+    
+    pageScreen.querySelector('#btnEdit').addEventListener('click',()=>{
+        if(pageScreen.querySelector('#btnSave').disabled){
+            if(confirm('Abrir registro para edição?')){
+                openFields(1)
+            }
+        }else{
+            openFields(0)
+        }
+    })
+
+    startPage()
+
+</script>
