@@ -25,3 +25,37 @@
 09/08/2024 20:31 adm@museu.com.br : Item Cadastrado  Studebaker, VCL
 09/08/2024 20:45 adm@museu.com.br : Item Cadastrado  Studebaker Commander, VCL
 09/08/2024 20:52 adm@museu.com.br : Item Cadastrado  Alfa Romeo RL Torpedo 1923, VCL
+10/08/2024 02:37 gilberto@teste.com.br : Item Cadastrado  Studebaker Commander, VCL
+10/08/2024 02:38 gilberto@teste.com.br : Item Cadastrado  Studebaker, VCL
+10/08/2024 02:39 gilberto@teste.com.br : Item Cadastrado  Studebaler, VCL
+10/08/2024 02:40 gilberto@teste.com.br : Item Cadastrado  Studebaker, VCL
+10/08/2024 02:44 gilberto@teste.com.br : Item Editado Studebaker -> , VCL
+10/08/2024 02:46 gilberto@teste.com.br : Item Deletado Studebaler -> , VCL
+10/08/2024 02:46 gilberto@teste.com.br : Item Editado Studebaker Commander -> Studebaker Commander, VCL
+10/08/2024 02:47 gilberto@teste.com.br : Item Editado Studebaker Commander -> Studebaker Commander, VCL
+10/08/2024 02:49 gilberto@teste.com.br : Item Editado Studebaker Commander -> Studebaker Commander, VCL
+10/08/2024 02:51 gilberto@teste.com.br : Item Cadastrado  Studebaker Commander, VCL
+10/08/2024 02:51 gilberto@teste.com.br : Item Editado Studebaker Commander -> Studebaker Commander, VCL
+10/08/2024 02:53 gilberto@teste.com.br : Item Editado Studebaker Commander -> Studebaker Commander, VCL
+10/08/2024 02:56 gilberto@teste.com.br : Item Deletado Studebaker Commander -> , VCL
+10/08/2024 03:02 gilberto@teste.com.br : Item Cadastrado  Studebaker, VCL
+10/08/2024 03:03 gilberto@teste.com.br : Item Editado Studebaker -> Studebaker, VCL
+10/08/2024 03:04 gilberto@teste.com.br : Item Editado Studebaker -> Studebaker, VCL
+10/08/2024 03:06 gilberto@teste.com.br : Item Editado Studebaker -> Studebaker, VCL
+10/08/2024 03:37 gilberto@teste.com.br : Item Editado Studebaker -> Studebaker, VCL
+10/08/2024 03:37 gilberto@teste.com.br : Item Editado Studebaker -> Studebaker, VCL
+10/08/2024 03:38 gilberto@teste.com.br : Item Editado Studebaker -> Studebaker Commander 1939, VCL
+10/08/2024 03:40 gilberto@teste.com.br : Acervo Cadastrado  -> Museu teste
+10/08/2024 03:41 gilberto@teste.com.br : Acervo Editado Museu teste -> Museu teste
+10/08/2024 03:42 gilberto@teste.com.br : Item Cadastrado  teste, VCL
+10/08/2024 03:43 gilberto@teste.com.br : Item Editado teste -> Novo Polo, VCL
+10/08/2024 05:09 adm@museu.com.br : Imagem Adicionada -> : Novo Polo
+10/08/2024 05:11 adm@museu.com.br : Imagem Adicionada -> : Novo Polo
+10/08/2024 05:14 adm@museu.com.br : Imagem Adicionada -> : Novo Polo
+10/08/2024 05:15 adm@museu.com.br : Imagem Adicionada -> : Novo Polo
+10/08/2024 05:15 adm@museu.com.br : Imagem Adicionada -> : Novo Polo
+10/08/2024 05:15 adm@museu.com.br : Imagem Adicionada -> : Novo Polo
+10/08/2024 05:15 adm@museu.com.br : Imagem Adicionada -> : Novo Polo
+10/08/2024 05:40 adm@museu.com.br : Imagem Adicionada -> : Studebaker Commander 1939
+10/08/2024 05:42 adm@museu.com.br : Imagem Adicionada -> : Studebaker Commander 1939
+10/08/2024 05:59 adm@museu.com.br : Imagem Adicionada -> : Studebaker Commander 1939

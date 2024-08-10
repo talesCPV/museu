@@ -23,7 +23,7 @@
         <div class="inline">
             <label for="edtAcervo">Acervo*</label>
             <div class="edtbtn">
-                <input type="text" id="edtAcervo" readonly>
+                <input type="text" class="only-view" id="edtAcervo" readonly disabled>
                 <button id="btnBuscaAcervo" class="only-view btn-round" disabled><span class="mdi mdi-magnify"></span></button>
             </div>
         </div>        
@@ -41,47 +41,55 @@
         </div>
         <div class="frm-cat VCL">
             <div class="inline">
-                <label for="edtVclPais">País</label>
-                <input type="text" class="only-view" id="edtVclPais" maxlength="25" disabled>
-                <label for="edtVclMarca">Marca</label>
-                <input type="text" class="only-view" id="edtVclMarca" maxlength="20" disabled>
-            </div>
-            <div class="inline">
                 <label for="edtVclAno">Ano</label>
                 <input type="text" class="only-view" id="edtVclAno" maxlength="4" style="width: 200px;" disabled>
+                <label for="edtVclPais">País</label>
+                <input type="text" class="only-view" id="edtVclPais" maxlength="25" disabled>
+                <label for="edtVclChassi">Chassi</label>
+                <input type="text" class="only-view" id="edtVclChassi" maxlength="20" disabled>
+            </div>
+            <div class="inline">
+                <label for="edtVclMarca">Marca</label>
+                <input type="text" class="only-view" id="edtVclMarca" maxlength="20" disabled>
                 <label for="edtVclModelo">Modelo</label>
                 <input type="text" class="only-view" id="edtVclModelo" maxlength="30" disabled>
-                </div>
-                <div class="inline">
+            </div>
+            <div class="inline">
                 <label for="edtVclTipo">Tipo</label>
                 <input type="text" class="only-view" id="edtVclTipo" maxlength="20" disabled>
                 <label for="edtVclCor">Cor</label>
                 <input type="text" class="only-view" id="edtVclCor" maxlength="15" disabled>
-                </div>
-                <div class="inline">
+                <label for="edtVclPlaca">Placa</label>
+                <input type="text" class="only-view" id="edtVclPlaca" maxlength="10" disabled>
+            </div>
+            <div class="inline">
                 <label for="edtVclCil">Cilindros</label>
                 <input type="text" class="only-view" id="edtVclCil" maxlength="3" onfocus="this.select();" inputmode="decimal" onkeyup="valInt(this)"disabled>
                 <label for="edtVclCdd">Cilindradas</label>
                 <input type="text" class="only-view" id="edtVclCdd" maxlength="10" onfocus="this.select();" inputmode="decimal" onkeyup="valFloat(this,4)" disabled>
+            </div>
+            <div class="inline">
                 <label for="edtVclPotHP">Potência HP</label>
                 <input type="text" class="only-view" id="edtVclPotHP" maxlength="10" onfocus="this.select();" inputmode="decimal" onkeyup="valFloat(this,4)" disabled>
-                </div>
-                <div class="inline">
+                <label for="edtVclVelMax">Vel. Máx.</label>
+                <input type="text" class="only-view" id="edtVclVelMax" maxlength="10" onfocus="this.select();" inputmode="decimal" onkeyup="valFloat(this,4)" disabled>
+            </div>
+            <div class="inline">
                 <label for="edtVclAlt">Altura</label>
                 <input type="text" class="only-view" id="edtVclAlt" maxlength="10" onfocus="this.select();" inputmode="decimal" onkeyup="valFloat(this)"disabled>
                 <label for="edtVclLarg">Largura</label>
                 <input type="text" class="only-view" id="edtVclLarg" maxlength="10" onfocus="this.select();" inputmode="decimal" onkeyup="valFloat(this)" disabled>
                 <label for="edtVclComp">Comprimento</label>
                 <input type="text" class="only-view" id="edtVclComp" maxlength="10" onfocus="this.select();" inputmode="decimal" onkeyup="valFloat(this)" disabled>
-                </div>
-                <div class="inline">
+            </div>
+            <div class="inline">
                 <label for="edtVclEE">Entre Eixo</label>
                 <input type="text" class="only-view" id="edtVclEE" maxlength="10" onfocus="this.select();" inputmode="decimal" onkeyup="valFloat(this)"disabled>
                 <label for="edtVclPor">Portas</label>
                 <input type="text" class="only-view" id="edtVclPor" maxlength="10" onfocus="this.select();" inputmode="decimal" onkeyup="valInt(this)" disabled>
                 <label for="edtVclPass">Passageiros</label>
                 <input type="text" class="only-view" id="edtVclPass" maxlength="10" onfocus="this.select();" inputmode="decimal" onkeyup="valInt(this)" disabled>
-                </div>                 
+            </div>                 
         </div>
         <div class="frm-cat QDR">
 
@@ -94,6 +102,7 @@
             <button id="btnDel" class="only-view" disabled>Deletar</button>
             <button id="btnEdit">Editar</button>
             <button id="btnSave" class="only-view" disabled>Salvar</button>
+            <button id="btnAnexo" class="only-view" disabled>Anexos</button>
         </div>
     </fieldset>
 
@@ -110,9 +119,36 @@
             openFields(1)
             pageScreen.querySelector('#btnDel').disabled = 1
             pageScreen.querySelector('#btnEdit').disabled = 1
+            pageScreen.querySelector('#btnAnexo').disabled = 1
         }else{
             pageScreen.querySelector('#edtNome').value = pageData.nome
-
+            pageScreen.querySelector('#edtAcervo').value = pageData.acervo
+            pageScreen.querySelector('#edtAcervo').data = {'id':pageData.id_acervo}
+            pageScreen.querySelector('#edtDesc').value = pageData.obs
+            pageScreen.querySelector('#cmbCat').value = pageData.cat
+            switch(pageData.cat){
+                case 'VCL':
+                    pageScreen.querySelector('#edtVclPais').value = pageData.pais
+                    pageScreen.querySelector('#edtVclMarca').value = pageData.marca
+                    pageScreen.querySelector('#edtVclAno').value = pageData.ano
+                    pageScreen.querySelector('#edtVclModelo').value = pageData.modelo
+                    pageScreen.querySelector('#edtVclChassi').value = pageData.chassi
+                    pageScreen.querySelector('#edtVclPlaca').value = pageData.placa
+                    pageScreen.querySelector('#edtVclTipo').value = pageData.tipo
+                    pageScreen.querySelector('#edtVclCor').value = pageData.cor
+                    pageScreen.querySelector('#edtVclCil').value = pageData.cilindros
+                    pageScreen.querySelector('#edtVclCdd').value = pageData.cilindrada
+                    pageScreen.querySelector('#edtVclPotHP').value = pageData.pot_hp
+                    pageScreen.querySelector('#edtVclVelMax').value = pageData.vel_max
+                    pageScreen.querySelector('#edtVclAlt').value = pageData.alt
+                    pageScreen.querySelector('#edtVclLarg').value = pageData.larg
+                    pageScreen.querySelector('#edtVclComp').value = pageData.comp
+                    pageScreen.querySelector('#edtVclEE').value = pageData.entre_eixo
+                    pageScreen.querySelector('#edtVclPor').value = pageData.portas
+                    pageScreen.querySelector('#edtVclPass').value = pageData.lugares
+                    break
+            }
+            
             pageScreen.querySelector('#btnEdit').disabled = 0
         }
     }
@@ -142,12 +178,12 @@
     }
 
 
-    pageFunc.setItens = ()=>{
+    pageFunc.setItens = (del=0)=>{
         if(checkField(['edtNome','edtAcervo'])){
             const params = new Object;
                 params.id = newItem ? 0 : pageData.id
                 params.id_acervo = pageScreen.querySelector('#edtAcervo').data.id
-                params.nome = pageScreen.querySelector('#edtNome').value.trim()
+                params.nome = del ? '' : pageScreen.querySelector('#edtNome').value.trim()
                 params.cat = pageScreen.querySelector('#cmbCat').value
                 params.obs = pageScreen.querySelector('#edtDesc').value.trim()
                 let query = 'ACE-3'
@@ -157,17 +193,20 @@
                         params.marca = pageScreen.querySelector('#edtVclMarca').value.trim()
                         params.ano = pageScreen.querySelector('#edtVclAno').value.trim()
                         params.modelo = pageScreen.querySelector('#edtVclModelo').value.trim()
+                        params.chassi = pageScreen.querySelector('#edtVclChassi').value.trim()
+                        params.placa = pageScreen.querySelector('#edtVclPlaca').value.trim()
                         params.tipo = pageScreen.querySelector('#edtVclTipo').value.trim()
                         params.cor = pageScreen.querySelector('#edtVclCor').value.trim()
                         params.cilindros = pageScreen.querySelector('#edtVclCil').value.trim()
                         params.cilindradas = pageScreen.querySelector('#edtVclCdd').value.trim()
                         params.potHP = pageScreen.querySelector('#edtVclPotHP').value.trim()
+                        params.vel_max = pageScreen.querySelector('#edtVclVelMax').value.trim()
                         params.alt = pageScreen.querySelector('#edtVclAlt').value.trim()
                         params.larg = pageScreen.querySelector('#edtVclLarg').value.trim()
                         params.comp = pageScreen.querySelector('#edtVclComp').value.trim()
                         params.e_eixo = pageScreen.querySelector('#edtVclEE').value.trim()
                         params.portas = pageScreen.querySelector('#edtVclPor').value.trim()                        
-                        params.passageiros = pageScreen.querySelector('#edtVclPass').value.trim()
+                        params.lugares = pageScreen.querySelector('#edtVclPass').value.trim()
                         query = 'ACE-3'
                         break
                     case 'QDR':
@@ -177,7 +216,7 @@
 
             const myPromisse = queryDB(params,query);
             myPromisse.then((resolve)=>{
-                setLog(`Item ${newItem?'Cadastrado':'Editado'} ${ !newItem ? pageData.nome+' ->' :''} ${params.nome}, ${params.cat}`)
+                setLog(`Item ${newItem?'Cadastrado':del ? 'Deletado' : 'Editado'} ${ !newItem ? pageData.nome+' ->' :''} ${params.nome}, ${params.cat}`)
                 try{
                     main_data.adm_itens.func.fillItens()
                 }catch{
@@ -189,21 +228,20 @@
         }
     }
 
-    pageFunc.delItem= ()=>{
-        if(confirm('Deseja realmente deletar este Ítem?')){
-            pageScreen.querySelector('#edtNome').value = ''
-            pageFunc.setItens()
-        }
-    }
-
     pageScreen.querySelector('#btnSave').addEventListener('click',()=>{
         pageFunc.setItens()
     })
 
     pageScreen.querySelector('#btnDel').addEventListener('click',()=>{
-        pageFunc.delItem()
+        if(confirm('Deseja realmente deletar este Ítem?')){            
+            pageFunc.setItens(1)
+        }
     })
 
+    pageScreen.querySelector('#btnAnexo').addEventListener('click',()=>{
+        openHTML('tool_anexos.html','pop-up','Anexos',pageData)
+    })
+    
     pageScreen.querySelector('#btnEdit').addEventListener('click',()=>{
         if(pageScreen.querySelector('#btnSave').disabled){
             if(confirm('Abrir registro para edição?')){

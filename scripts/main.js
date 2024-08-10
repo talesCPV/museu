@@ -42,10 +42,9 @@ function pictab(e){
     function checkUserMail(){
         const params = new Object;
             params.hash = localStorage.getItem('hash')
-
         const myPromisse = queryDB(params,'USR-3');
         myPromisse.then((resolve)=>{
-            const json = JSON.parse(resolve)[0]        
+            const json = JSON.parse(resolve)[0]    
             const unread = json.new_mail
             document.querySelector('#mail-badge-lbl').innerHTML = unread!='0' ? unread : ''
         })

@@ -41,7 +41,7 @@ CREATE TABLE tb_mail (
 	data TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
     id_from int(11) NOT NULL,
     id_to int(11) NOT NULL,
-    message varchar(512),
+    message varchar(1000),
     looked boolean DEFAULT 0,
     FOREIGN KEY (id_from) REFERENCES tb_usuario(id),
     FOREIGN KEY (id_to) REFERENCES tb_usuario(id),
@@ -97,11 +97,14 @@ CREATE TABLE tb_item_vcl (
     marca varchar(20) DEFAULT NULL,
 	ano varchar(4) DEFAULT NULL,
     modelo varchar(30) DEFAULT NULL,
+    chassi varchar(20) DEFAULT NULL,
+    placa varchar(10) DEFAULT NULL,
     tipo varchar(20) DEFAULT NULL,
     cor varchar(15) DEFAULT NULL,
     cilindros int DEFAULT NULL,
-    cilindada double DEFAULT NULL,
-    pot_hp double DEFAULT NULL,    
+    cilindrada double DEFAULT NULL,
+    pot_hp double DEFAULT NULL,
+    vel_max double DEFAULT NULL,
     alt double DEFAULT NULL,
     larg double DEFAULT NULL,
     comp double DEFAULT NULL,
@@ -111,3 +114,5 @@ CREATE TABLE tb_item_vcl (
 	FOREIGN KEY (id_item) REFERENCES tb_item(id),
     PRIMARY KEY (id_veiculo)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+--  ALTER TABLE tb_item_vcl ADD placa varchar(10) DEFAULT NULL AFTER chassi; 

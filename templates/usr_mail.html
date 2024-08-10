@@ -122,7 +122,7 @@
                             <label for="cmbUser">Destinatário</label>
                             <select id="cmbUser"></select>
                         </div>
-                        <textarea id="edtMail" cols="30" rows="10" maxlength="512"></textarea>
+                        <textarea id="edtMail" cols="30" rows="10" maxlength="1000"></textarea>
                         <div class="line">
                             <button id="btnEnviar">Enviar</button>
                         </div>
@@ -130,12 +130,12 @@
                     <div class="tab-content">
                         <h3>Caixa de Entrada</h3>
                         <select id="cmbEntrada" class="cmbMail" size="10"></select>
-                        <textarea id="edtViewEntrada" cols="30" rows="10" maxlength="512" readonly></textarea>
+                        <textarea id="edtViewEntrada" cols="30" rows="10" readonly></textarea>
                     </div>
                     <div class="tab-content">
                         <h3>Mensagens Enviadas</h3>
                         <select id="cmbSaida" class="cmbMail" size="10"></select>
-                        <textarea id="edtViewSaida" cols="30" rows="10" maxlength="512" readonly></textarea>
+                        <textarea id="edtViewSaida" cols="30" rows="10" readonly></textarea>
                     </div>
     
                 </div>
@@ -189,7 +189,7 @@
             for(let i=0; i<json.length; i++){        
                 const opt = document.createElement('option')
                 opt.data = json[i]       
-                opt.style["font-weight"] = json[i].nao_lida=='0' ? 'lighter' : 'bold'
+                opt.style["font-weight"] = json[i].looked=='1' ? 'lighter' : 'bold'
                 opt.innerHTML = json[i].data.date()+' '+json[i].data.time()+' '+(send ? json[i].mail_from : json[i].mail_to) + ' - ' + json[i].message.substring(0,60)
                 mail.appendChild(opt)
             }
