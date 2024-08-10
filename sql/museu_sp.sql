@@ -24,6 +24,46 @@ DELIMITER $$
 			EXECUTE stmt1;
 	END $$
 DELIMITER ;
+/* API */
+
+ DROP PROCEDURE sp_set_acesso;
+DELIMITER $$
+	CREATE PROCEDURE sp_set_acesso(
+		IN Iallow varchar(80),
+        IN Ihash varchar(64),
+        IN Itoken varchar(64),
+		IN Iid_acervo int(11),
+        IN Iexpira_em int,
+		IN Iler boolean,
+		IN Icriar boolean,
+		IN Ialterar boolean,
+		IN Ideletar boolean
+    )
+	BEGIN    
+		CALL sp_allow(Iallow,Ihash);
+		IF(@allow)THEN
+			SET @id_call = (SELECT IFNULL(id,0) FROM tb_usuario WHERE hash COLLATE utf8_general_ci = Ihash COLLATE utf8_general_ci LIMIT 1);
+            SET @criado = (SELECT CURRENT_TIMESTAMP());
+            SET @expira = (SELECT CURRENT_TIMESTAMP()+ INTERVAL Iexpira_em DAY);            
+            IF(Itoken="")THEN
+				SET @token = (SELECT SHA2(CONCAT(id_acervo, @id_call,@criado+0), 256) );
+				INSERT INTO tb_acesso (id_owner,id_acervo,token,criado_em,expira_em,ler,criar,alterar,deletar)
+                VALUES (@id_call,Iid_acervo,@token,@criado,@expira,Iler,Icriar,Ialterar,Ideletar);
+			ELSE 
+				SET @id_owner = (SELECT id_owner FROM tb_acesso WHERE token COLLATE utf8_general_ci = Itoken COLLATE utf8_general_ci LIMIT 1);
+				IF(@id_call=@id_owner)THEN
+					IF(Iid_acervo=0)THEN
+						DELETE FROM tb_acesso WHERE token=Itoken;
+					ELSE
+						UPDATE tb_acesso
+						SET expira_em=@expira,ler=Iler,criar=Icriar,alterar=Ialterar,deletar=Ideletar
+						WHERE token=Itoken;
+					END IF;
+                END IF;
+            END IF;
+        END IF;
+	END $$
+DELIMITER ;
 
 /* LOGIN */
 

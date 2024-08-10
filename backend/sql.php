@@ -10,6 +10,9 @@
         "USR-2"  => 'CALL sp_updatePass(@hash,"x00");', // PASS
         "USR-3"  => 'CALL sp_check_usr_mail(@hash);', //
 
+        /* ACCESS */
+        "ACC-0" => 'CALL sp_set_acesso(@access,@hash,x00,"x01","x02","x03","x04","x05","x06","x07","x08");', //allow,hash,token,id_acervo,expira_em,ler,criar,alterar,deletar
+
         /* CALENDAR */
         "CAL-0"  => 'CALL sp_view_calendar(@hash,"x00","x01");', // DT_INI, DT_FIN
         "CAL-1"  => 'CALL sp_set_calendar(@hash,"x00","x01");', // DT_AGD, OBS

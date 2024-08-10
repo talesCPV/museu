@@ -25,16 +25,19 @@ CREATE TABLE tb_usr_perm_perfil (
 
  DROP TABLE tb_acesso;
 CREATE TABLE tb_acesso (
-    id int(11) NOT NULL AUTO_INCREMENT,
-    email varchar(70) NOT NULL,
-    hash varchar(64) NOT NULL,
-    token varchar(64) DEFAULT NULL,
-    access int(11) DEFAULT -1,
-	UNIQUE KEY (hash),
-	UNIQUE KEY (email),
-    PRIMARY KEY (id)
+    id_owner varchar(70) DEFAULT NULL,
+    id_acervo int(11) NOT NULL,
+    token varchar(64) NOT NULL,
+    criado_em datetime,
+    expira_em datetime,
+    ler boolean default 1,
+    criar boolean default 0,
+    alterar boolean default 0,
+    deletar boolean default 0,
+    FOREIGN KEY (id_owner) REFERENCES tb_usuario(id),
+    FOREIGN KEY (id_acervo) REFERENCES tb_acervo(id),
+    PRIMARY KEY (token)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
-
 
  DROP TABLE tb_mail;
 CREATE TABLE tb_mail (
@@ -114,5 +117,3 @@ CREATE TABLE tb_item_vcl (
 	FOREIGN KEY (id_item) REFERENCES tb_item(id),
     PRIMARY KEY (id_veiculo)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
-
---  ALTER TABLE tb_item_vcl ADD placa varchar(10) DEFAULT NULL AFTER chassi; 
