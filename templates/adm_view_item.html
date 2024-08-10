@@ -99,10 +99,10 @@
 
 
         <div class="line">
-            <button id="btnDel" class="only-view" disabled>Deletar</button>
-            <button id="btnEdit">Editar</button>
-            <button id="btnSave" class="only-view" disabled>Salvar</button>
             <button id="btnAnexo" class="only-view" disabled>Anexos</button>
+            <button id="btnEdit">Editar</button>
+            <button id="btnDel" class="only-view" disabled>Deletar</button>
+            <button id="btnSave" class="only-view" disabled>Salvar</button>
         </div>
     </fieldset>
 
@@ -150,6 +150,7 @@
             }
             
             pageScreen.querySelector('#btnEdit').disabled = 0
+            pageScreen.querySelector('#btnAnexo').disabled = 0
         }
     }
 
@@ -239,7 +240,7 @@
     })
 
     pageScreen.querySelector('#btnAnexo').addEventListener('click',()=>{
-        openHTML('tool_anexos.html','pop-up','Anexos',pageData)
+        openHTML('tool_anexos.html','pop-up','Anexos',pageData,800)
     })
     
     pageScreen.querySelector('#btnEdit').addEventListener('click',()=>{

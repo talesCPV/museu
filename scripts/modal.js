@@ -185,16 +185,27 @@ function queueModal(id){
 }
 
 function menuContext(tbl,e){
-    const mod_main = document.querySelector('#myModal')
 
+    function removeFrame(){
+        const frame = document.querySelectorAll('.back-frame')
+        for(let i=0; i<frame.length; i++){
+            frame[i].remove()
+        }
+        document.querySelector('.modal').style.display = 'none'
+    }
+
+    const mod_main = document.querySelector('#myModal')
+        mod_main.addEventListener('click',()=>{
+            removeFrame()
+        })
     const backModal = document.createElement('div')
-        backModal.classList = 'modal'
+        backModal.classList = 'modal back-frame'
         backModal.id = 'context'
-        backModal.style.zIndex = 200
+        backModal.style.zIndex = 9999
         backModal.style.display = 'block'
         backModal.style.backgroundColor = 'unset'
         backModal.addEventListener('click',()=>{
-            document.querySelector('#context').remove()
+            removeFrame()
             mod_main.style.display = (document.querySelectorAll('.modal-content').length < 1) ? "none" : 'block'
         })
 
@@ -216,6 +227,7 @@ function menuContext(tbl,e){
             const td = document.createElement('td')
             td.innerHTML = tbl[i].label
             td.addEventListener('click',()=>{
+                removeFrame()
                 tbl[i].link()
             })
             tr.appendChild(td)            
