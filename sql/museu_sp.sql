@@ -26,6 +26,23 @@ DELIMITER $$
 DELIMITER ;
 /* API */
 
+ DROP PROCEDURE sp_check_token;
+DELIMITER $$
+	CREATE PROCEDURE sp_check_token(
+		IN Itoken varchar(64)
+    )
+	BEGIN    
+		SET @id_acervo = 0;
+        SET @read = 0;
+        SET @add = 0;
+        SET @edit = 0;
+        SET @del = 0;
+		
+        SELECT id_acervo, ler, criar, alterar, deletar INTO @id_acervo, @read, @add,@edit,@del FROM tb_acesso WHERE token COLLATE utf8_general_ci = Itoken COLLATE utf8_general_ci LIMIT 1;
+		
+	END $$
+DELIMITER ;
+
  DROP PROCEDURE sp_set_acesso;
 DELIMITER $$
 	CREATE PROCEDURE sp_set_acesso(
@@ -78,6 +95,19 @@ DELIMITER $$
             DELETE FROM tb_acesso WHERE expira_em < @today;
 			SELECT * FROM vw_tokens;
         END IF;
+	END $$
+DELIMITER ;
+
+ DROP PROCEDURE sp_api_view_itens;
+DELIMITER $$
+	CREATE PROCEDURE sp_api_view_itens(
+		IN Itoken varchar(64)
+    )
+	BEGIN
+		CALL sp_check_token(Itoken);
+        IF(@read=1)THEN
+			SELECT * FROM vw_itens WHERE id_acervo=@id_acervo;
+		END IF;    
 	END $$
 DELIMITER ;
 

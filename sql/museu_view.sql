@@ -38,3 +38,8 @@ SELECT * FROM vw_itens;
     ORDER BY expira_em ASC;
     
 SELECT * FROM vw_tokens;
+
+/* API LEITURA*/
+/*  VEÍCULOS  */
+
+
