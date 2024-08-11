@@ -1,37 +1,6 @@
 /*  PROTOTYPES  */
 
 /*  STRING  */
-String.prototype.getHash = function(S){
-    let weigth = 0
-    let hash = ''
-    let str = this.valueOf()
-
-    function getRange(N){ // keeps caracters under ASCII 33 & 126
-        while (N > 126 || N < 33){
-            N -= 126
-            N < 33 ? N += 33 : N
-            N == 127 ? N++ : 0
-        }
-        return N
-    }
-
-    for (i = 0; i < str.length; i++) {
-        weigth += str.charCodeAt(i) * 5
-    }
-
-    while(str.length < S){
-        str += String.fromCharCode(str.length + 33)
-    }
-
-    for (i = 0; i < str.length; i++) {
-        chr = getRange(weigth * str.charCodeAt(i))
-        chr = chr===92 ? 168 : chr;
-        chr = chr===34 ? 173 : chr;
-        hash += String.fromCharCode(chr)  
-    }
-    
-    return hash;
-}
 
 String.prototype.maxWidth = (N=0)=>{
     return ((N>0 && N<this.length) ? this.valueOf().substring(0,N) : this.valueOf())
@@ -56,7 +25,7 @@ String.prototype.money = function(D=2){
     return 'R$'+before_dot+'.'+after_dot
 }
 
-String.prototype.date = function(){
+String.prototype.viewDate = function(){
     const str = this.valueOf()
     return (str.substring(8,10)+'/'+str.substring(5,7)+'/'+str.substring(0,4))
 }

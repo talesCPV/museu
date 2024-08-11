@@ -34,6 +34,7 @@ SELECT * FROM vw_itens;
 	INNER JOIN tb_usuario AS USR
 	INNER JOIN tb_acervo AS ACV
 	ON ACS.id_owner = USR.id
-	AND ACS.id_acervo = ACV.id;
+	AND ACS.id_acervo = ACV.id
+    ORDER BY expira_em ASC;
     
 SELECT * FROM vw_tokens;

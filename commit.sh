@@ -10,6 +10,7 @@ then
 
     git init
 
+    git add API/
     git add assets/
     git add backend/
     git add config/

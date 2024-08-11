@@ -1,13 +1,18 @@
 <template>
     <style>
+        .center{
+            text-align: center;
+        }
 
-     
     </style>
 
-    <fieldset>
+    <fieldset class="fds-token">
         <legend>Tokens</legend>
-        <button id="btnNovo" class="btn-round"><span class="mdi mdi-plus-thick"></span></button>        
+                
         <table id="tblToken"></table>
+        <div class="line">
+            <button id="btnNovo"><span class="mdi mdi-plus-thick"></span> Novo Token</button>
+        </div>
     </fieldset>
 
 
@@ -24,16 +29,26 @@
         const myPromisse = queryDB({},'ACC-0');
         myPromisse.then((resolve)=>{
             const json = JSON.parse(resolve)
-            tbl.head('Dono,Acervo,Expira,Ler,Criar,Alterar,Deletar')
+            tbl.head('Dono,Acervo,Expira,Read|center,Write|center,Edit|center,Del|center')
             for(let i=0; i<json.length; i++){
-                tbl.plot(json[i],'owner,acervo,expira_em,ler,criar,alterar,deletar','str,Upp,dat,str,str,str,str')
+                tbl.plot(json[i],'owner,acervo,expira_em,ler|center,criar|center,alterar|center,deletar|center','str,Upp,dat,ico 1=mdi-check-bold 2=mdi-close-thick,ico 1=mdi-check-bold 2=mdi-close-thick,ico 1=mdi-check-bold 2=mdi-close-thick,ico 1=mdi-check-bold 2=mdi-close-thick')
             }
         });
     }
 
     pageScreen.querySelector('#btnNovo').addEventListener('click',()=>{
+        closeModal('sys_view_token')
         openHTML('sys_view_token.html','pop-up','Novo Acesso Remoto')
     })
+
+    pageScreen.querySelector('#tblToken').addEventListener('click',(e)=>{
+        data = e.target.parentNode.data
+        if(data != undefined){
+            closeModal('sys_view_token')
+            openHTML('sys_view_token.html','pop-up',`Edição de dados `,data)
+       }
+    })
+
 
     pageFunc.fillTokens()
 

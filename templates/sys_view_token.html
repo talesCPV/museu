@@ -25,25 +25,24 @@
         </div>
 
         <div class="inline">
-            <label for="edtVal">Validade(dias)*</label>
-            <input type="text" class="only-view" id="edtVal" maxlength="4" onfocus="this.select();" inputmode="decimal" onkeyup="valInt(this)" value="30" disabled>
-        </div>
+            <label for="ckbLer">Read</label>
+            <input type="checkbox" class="only-view" id="ckbLer" disabled checked>
+            <label for="ckbAdd">Write</label>
+            <input type="checkbox" class="only-view" id="ckbAdd" disabled>
+            <label for="ckbAlt">Edit</label>
+            <input type="checkbox" class="only-view" id="ckbAlt" disabled>
+            <label for="ckbDel">Del</label>
+            <input type="checkbox" class="only-view" id="ckbDel" disabled>
+            <label for="edtVal">Dias*</label>
+            <input type="text" class="only-view" id="edtVal" maxlength="4" onfocus="this.select();" inputmode="decimal" onkeyup="valInt(this)" value="30" style="width: 55px;text-align: center;" disabled>
 
-        <div class="inline">
-            <label for="ckbLer">Ler</label>
-            <input type="checkbox" id="ckbLer" checked>
-            <label for="ckbAdd">Adicionar</label>
-            <input type="checkbox" id="ckbAdd">
-            <label for="ckbAlt">Alterar</label>
-            <input type="checkbox" id="ckbAlt">
-            <label for="ckbDel">Deletar</label>
-            <input type="checkbox" id="ckbDel">
         </div>
 
         <div class="line">
             <button id="btnEdit">Editar</button>
             <button id="btnDel" class="only-view" disabled>Deletar</button>
             <button id="btnSave" class="only-view" disabled>Salvar</button>
+            <button id="btnToken" class="only-view" disabled><span class="mdi mdi-key-variant"></span></button>
         </div>
     </fieldset>
 
@@ -60,17 +59,21 @@
             openFields(1)
             pageScreen.querySelector('#btnDel').disabled = 1
             pageScreen.querySelector('#btnEdit').disabled = 1
+            pageScreen.querySelector('#btnToken').disabled = 1
 
         }else{
+            const exp = new Date(pageData.expira_em)
+
             pageScreen.querySelector('#edtAcervo').value = pageData.acervo
             pageScreen.querySelector('#edtAcervo').data = {'id':pageData.id_acervo}
-            pageScreen.querySelector('#edtVal').value = pageData.expira_em
+            pageScreen.querySelector('#edtVal').value = Math.round((exp - today)/86400000)
             pageScreen.querySelector('#ckbLer').checked = parseInt(pageData.ler)
             pageScreen.querySelector('#ckbAdd').checked = parseInt(pageData.criar)
             pageScreen.querySelector('#ckbAlt').checked = parseInt(pageData.alterar)
             pageScreen.querySelector('#ckbDel').checked = parseInt(pageData.deletar)
 
             pageScreen.querySelector('#btnEdit').disabled = 0
+            pageScreen.querySelector('#btnToken').disabled = 0
         }
     }
 
@@ -82,6 +85,7 @@
     }
 
     pageScreen.querySelector('#btnBuscaAcervo').addEventListener('click',()=>{
+        closeModal('busca_acervo')
         openHTML('busca_acervo.html','pop-up','Selecione o Acervo',{'org':'sys_view_token'},600)
     })
 
@@ -91,7 +95,7 @@
     }
 
     pageFunc.setToken = (del=0)=>{
-        if(checkField(['edtAcervo'])){
+        if(checkField(['edtAcervo','edtVal'])){
             const params = new Object;
                 params.token = newToken ? '' : pageData.token
                 params.id_acervo = del ? 0 : pageScreen.querySelector('#edtAcervo').data.id
@@ -103,7 +107,9 @@
 
             const myPromisse = queryDB(params,'ACC-1');
             myPromisse.then((resolve)=>{
-                setLog(`Item ${newToken?'Cadastrado':del ? 'Deletado' : 'Editado'} ${ !newToken ? pageData.expira_em+' ->' :''} ${params.expira_em}, Acervo:${params.id_acervo}`)
+                const exp = new Date()
+                exp.change(Number(params.expira_em))
+                setLog(`TOKEN ${newToken?'Cadastrado':del ? 'Deletado' : 'Editado'}, Acervo:${pageScreen.querySelector('#edtAcervo').value}, Expira ${exp.getFormatBR()} (${params.ler},${params.criar},${params.alterar},${params.deletar}) `)
                 try{
                     main_data.sys_token.func.fillTokens()
                 }catch{
@@ -125,15 +131,20 @@
         }
     })
     
+    pageScreen.querySelector('#btnToken').addEventListener('click',()=>{
+        alert(pageData.token)
+    })
+
     pageScreen.querySelector('#btnEdit').addEventListener('click',()=>{
         if(pageScreen.querySelector('#btnSave').disabled){
             if(confirm('Abrir registro para edição?')){
                 openFields(1)
+                pageScreen.querySelector('#btnToken').disabled = 1
             }
         }else{
             openFields(0)
         }
-    })
+    })    
 
     startPage()
 

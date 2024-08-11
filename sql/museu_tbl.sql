@@ -25,7 +25,7 @@ CREATE TABLE tb_usr_perm_perfil (
 
  DROP TABLE tb_acesso;
 CREATE TABLE tb_acesso (
-    id_owner varchar(70) DEFAULT NULL,
+    id_owner int(11) NOT NULL,
     id_acervo int(11) NOT NULL,
     token varchar(64) NOT NULL,
     criado_em datetime,

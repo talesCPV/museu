@@ -73,3 +73,27 @@
 11/08/2024 00:01 adm@museu.com.br : Item Cadastrado  2024-08-3000:00:00, Acervo:3
 11/08/2024 00:17 adm@museu.com.br : Item Cadastrado  30, Acervo:3
 11/08/2024 00:18 adm@museu.com.br : Item Cadastrado  30, Acervo:3
+11/08/2024 03:23 adm@museu.com.br : Item Cadastrado  20, Acervo:3
+11/08/2024 03:25 adm@museu.com.br : Item Cadastrado  30, Acervo:3
+11/08/2024 03:32 adm@museu.com.br : Item Cadastrado  , Acervo:3
+11/08/2024 03:33 adm@museu.com.br : Item Cadastrado  20, Acervo:3
+11/08/2024 03:34 adm@museu.com.br : Item Cadastrado  20, Acervo:3
+11/08/2024 03:36 adm@museu.com.br : Item Cadastrado  20, Acervo:3
+11/08/2024 03:51 adm@museu.com.br : Item Editado 2024-08-30 22:36:17 -> 20, Acervo:3
+11/08/2024 03:53 adm@museu.com.br : Item Editado 2024-08-30 22:36:17 -> 25, Acervo:3
+11/08/2024 03:57 adm@museu.com.br : Item Cadastrado  30, Acervo:3
+11/08/2024 03:57 adm@museu.com.br : Item Cadastrado  25, Acervo:3
+11/08/2024 03:59 adm@museu.com.br : Item Editado 2024-09-04 22:57:55 -> 25, Acervo:3
+11/08/2024 04:02 adm@museu.com.br : Item Editado 2024-09-09 22:57:41 -> 30, Acervo:3
+11/08/2024 04:02 adm@museu.com.br : Item Editado 2024-09-09 22:57:41 -> 30, Acervo:3
+11/08/2024 04:04 adm@museu.com.br : Item Editado 2024-09-04 22:57:55 -> 25, Acervo:3
+11/08/2024 04:18 adm@museu.com.br : Item Editado 2024-09-09 23:18:14 -> 10, Acervo:3
+11/08/2024 04:19 adm@museu.com.br : Item Editado 2024-08-20 23:18:45 -> 5, Acervo:3
+11/08/2024 04:22 adm@museu.com.br : Item Deletado 2024-08-15 23:19:08 -> 5, Acervo:0
+11/08/2024 04:23 adm@museu.com.br : Item Editado 2024-09-04 22:57:55 -> 90, Acervo:3
+11/08/2024 04:29 adm@museu.com.br : Item Editado 2024-11-08 23:23:11 -> 90, Acervo:3
+11/08/2024 04:49 adm@museu.com.br : Item Cadastrado  60, Acervo:1
+11/08/2024 05:07 adm@museu.com.br : TOKEN Editado, Acervo:Museu teste, Expira 15/09/2024
+11/08/2024 05:07 adm@museu.com.br : TOKEN Editado, Acervo:Museu teste, Expira 12/09/2024
+11/08/2024 05:10 adm@museu.com.br : TOKEN Editado, Acervo:MUSEU PAULISTA DE ANTIGUIDADES MECANICAS ROBERTO LEE, Expira 10/10/2024 (1,1,0,0) 
+11/08/2024 05:11 adm@museu.com.br : TOKEN Editado, Acervo:MUSEU PAULISTA DE ANTIGUIDADES MECANICAS ROBERTO LEE, Expira 10/10/2024 (1,1,1,1) 

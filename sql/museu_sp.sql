@@ -46,18 +46,18 @@ DELIMITER $$
             SET @criado = (SELECT CURRENT_TIMESTAMP());
             SET @expira = (SELECT CURRENT_TIMESTAMP()+ INTERVAL Iexpira_em DAY);            
             IF(Itoken="")THEN
-				SET @token = (SELECT SHA2(CONCAT(Iid_acervo, @id_call,@criado+0), 256) );
+				SET @token = (SELECT SHA2(CONCAT(Iid_acervo, @id_call,@criado,@expira,Iler,Icriar,Ialterar,Ideletar), 256) );
 				INSERT INTO tb_acesso (id_owner,token,id_acervo,criado_em,expira_em,ler,criar,alterar,deletar)
                 VALUES (@id_call,@token,Iid_acervo,@criado,@expira,Iler,Icriar,Ialterar,Ideletar);
 			ELSE 
-				SET @id_owner = (SELECT id_owner FROM tb_acesso WHERE token COLLATE utf8_general_ci = Itoken COLLATE utf8_general_ci LIMIT 1);
-				IF(@id_call=@id_owner)THEN
+                SET @id_owner = (SELECT IFNULL(id_owner,0) FROM tb_acesso WHERE token COLLATE utf8_general_ci = Itoken COLLATE utf8_general_ci LIMIT 1);
+				IF(@id_owner = @id_call)THEN
 					IF(Iid_acervo=0)THEN
-						DELETE FROM tb_acesso WHERE token=Itoken;
+						DELETE FROM tb_acesso WHERE token COLLATE utf8_general_ci = Itoken COLLATE utf8_general_ci;
 					ELSE
 						UPDATE tb_acesso
 						SET expira_em=@expira,ler=Iler,criar=Icriar,alterar=Ialterar,deletar=Ideletar
-						WHERE token=Itoken;
+						WHERE token = Itoken COLLATE utf8_general_ci;
 					END IF;
                 END IF;
             END IF;
@@ -76,9 +76,7 @@ DELIMITER $$
 		IF(@allow)THEN
 			SET @today = (SELECT CURRENT_TIMESTAMP());
             DELETE FROM tb_acesso WHERE expira_em < @today;
-            
-			SELECT * FROM vw_tokens
-            ORDER BY expira_em DESC;
+			SELECT * FROM vw_tokens;
         END IF;
 	END $$
 DELIMITER ;

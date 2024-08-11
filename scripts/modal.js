@@ -4,7 +4,7 @@ async function openHTML(template='',where="content-screen",label="", data="",wid
     width = width == 'auto' ? (document.querySelector('body').offsetWidth - 160)+'px' : width+'px'
 
 
-    if(template.trim() != "" && !main_data.hasOwnProperty(template.split('.')[0])){
+    if(template.trim() != "" && !main_data.hasOwnProperty(template.split('.')[0])){     
         const page_name = template.split('.')[0]
         return await new Promise((resolve,reject) =>{
             fetch( "templates/"+template)
