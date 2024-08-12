@@ -24,92 +24,6 @@ DELIMITER $$
 			EXECUTE stmt1;
 	END $$
 DELIMITER ;
-/* API */
-
- DROP PROCEDURE sp_check_token;
-DELIMITER $$
-	CREATE PROCEDURE sp_check_token(
-		IN Itoken varchar(64)
-    )
-	BEGIN    
-		SET @id_acervo = 0;
-        SET @read = 0;
-        SET @add = 0;
-        SET @edit = 0;
-        SET @del = 0;
-		
-        SELECT id_acervo, ler, criar, alterar, deletar INTO @id_acervo, @read, @add,@edit,@del FROM tb_acesso WHERE token COLLATE utf8_general_ci = Itoken COLLATE utf8_general_ci LIMIT 1;
-		
-	END $$
-DELIMITER ;
-
- DROP PROCEDURE sp_set_acesso;
-DELIMITER $$
-	CREATE PROCEDURE sp_set_acesso(
-		IN Iallow varchar(80),
-        IN Ihash varchar(64),
-        IN Itoken varchar(64),
-		IN Iid_acervo int(11),
-        IN Iexpira_em int,
-		IN Iler boolean,
-		IN Icriar boolean,
-		IN Ialterar boolean,
-		IN Ideletar boolean
-    )
-	BEGIN    
-		CALL sp_allow(Iallow,Ihash);
-		IF(@allow)THEN
-			SET @id_call = (SELECT IFNULL(id,0) FROM tb_usuario WHERE hash COLLATE utf8_general_ci = Ihash COLLATE utf8_general_ci LIMIT 1);
-            SET @criado = (SELECT CURRENT_TIMESTAMP());
-            SET @expira = (SELECT CURRENT_TIMESTAMP()+ INTERVAL Iexpira_em DAY);            
-            IF(Itoken="")THEN
-				SET @token = (SELECT SHA2(CONCAT(Iid_acervo, @id_call,@criado,@expira,Iler,Icriar,Ialterar,Ideletar), 256) );
-				INSERT INTO tb_acesso (id_owner,token,id_acervo,criado_em,expira_em,ler,criar,alterar,deletar)
-                VALUES (@id_call,@token,Iid_acervo,@criado,@expira,Iler,Icriar,Ialterar,Ideletar);
-			ELSE 
-                SET @id_owner = (SELECT IFNULL(id_owner,0) FROM tb_acesso WHERE token COLLATE utf8_general_ci = Itoken COLLATE utf8_general_ci LIMIT 1);
-				IF(@id_owner = @id_call)THEN
-					IF(Iid_acervo=0)THEN
-						DELETE FROM tb_acesso WHERE token COLLATE utf8_general_ci = Itoken COLLATE utf8_general_ci;
-					ELSE
-						UPDATE tb_acesso
-						SET expira_em=@expira,ler=Iler,criar=Icriar,alterar=Ialterar,deletar=Ideletar
-						WHERE token = Itoken COLLATE utf8_general_ci;
-					END IF;
-                END IF;
-            END IF;
-        END IF;
-	END $$
-DELIMITER ;
-
- DROP PROCEDURE sp_view_tokens;
-DELIMITER $$
-	CREATE PROCEDURE sp_view_tokens(
-		IN Iallow varchar(80),
-        IN Ihash varchar(64)
-    )
-	BEGIN    
-		CALL sp_allow(Iallow,Ihash);
-		IF(@allow)THEN
-			SET @today = (SELECT CURRENT_TIMESTAMP());
-            DELETE FROM tb_acesso WHERE expira_em < @today;
-			SELECT * FROM vw_tokens;
-        END IF;
-	END $$
-DELIMITER ;
-
- DROP PROCEDURE sp_api_view_itens;
-DELIMITER $$
-	CREATE PROCEDURE sp_api_view_itens(
-		IN Itoken varchar(64)
-    )
-	BEGIN
-		CALL sp_check_token(Itoken);
-        IF(@read=1)THEN
-			SELECT * FROM vw_itens WHERE id_acervo=@id_acervo;
-		END IF;    
-	END $$
-DELIMITER ;
 
 /* LOGIN */
 
@@ -199,7 +113,23 @@ DELIMITER $$
 	END $$
 DELIMITER ;
 
-/* PERMISSÂO */
+ DROP PROCEDURE sp_check_usr_mail;
+DELIMITER $$
+	CREATE PROCEDURE sp_check_usr_mail(
+		IN Iallow varchar(80),
+		IN Ihash varchar(64)
+    )
+	BEGIN        
+		CALL sp_allow(Iallow,Ihash);
+		IF(@allow)THEN        
+			SELECT COUNT(*) AS new_mail FROM tb_mail WHERE id_to = @id_call AND looked=0;
+		ELSE
+			SELECT 0 AS new_mail ;
+        END IF;
+	END $$
+DELIMITER ;
+
+	/* PERMISSÂO */
 
  DROP PROCEDURE sp_set_usr_perm_perf;
 DELIMITER $$
@@ -284,21 +214,6 @@ DELIMITER $$
 DELIMITER ;
 
 /* MAIL */
-
- DROP PROCEDURE sp_check_usr_mail;
-DELIMITER $$
-	CREATE PROCEDURE sp_check_usr_mail(
-		IN Ihash varchar(64)
-    )
-	BEGIN
-		SET @id_call = (SELECT IFNULL(id,0) FROM tb_usuario WHERE hash COLLATE utf8_general_ci = Ihash COLLATE utf8_general_ci LIMIT 1);
-		IF(@id_call>0)THEN        
-			SELECT COUNT(*) AS new_mail FROM tb_mail WHERE id_to = @id_call AND looked=0;
-		ELSE
-			SELECT 0 AS new_mail ;
-        END IF;
-	END $$
-DELIMITER ;
 
  DROP PROCEDURE sp_set_mail;
 DELIMITER $$
@@ -477,14 +392,11 @@ DELIMITER $$
 		IN Imarca varchar(20),
 		IN Iano varchar(4),
 		IN Imodelo varchar(30),
-        IN Ichassi varchar(20),
-        IN Iplaca varchar(10),
 		IN Itipo varchar(20),
 		IN Icor varchar(15),
 		IN Icilindros int,
-		IN Icilindrada double,
+		IN Icilindada double,
 		IN Ipot_hp double,
-        IN Ivel_max double,
 		IN Ialt double,
 		IN Ilarg double,
 		IN Icomp double,
@@ -499,16 +411,16 @@ DELIMITER $$
 				INSERT INTO tb_item (id_acervo,nome,cat,obs)
 				VALUES (Iid_acervo,Inome,Icat,Iobs);
                 SET @id = (SELECT MAX(id) FROM tb_item);
-                INSERT INTO tb_item_vcl (id_item,pais,marca,ano,modelo,chassi,placa,tipo,cor,cilindros,cilindrada,pot_hp,vel_max,alt,larg,comp,entre_eixo,portas,lugares)
-                VALUES(@id,Ipais,Imarca,Iano,Imodelo,Ichassi,Iplaca,Itipo,Icor,Icilindros,Icilindrada,Ipot_hp,Ivel_max,Ialt,Ilarg,Icomp,Ientre_eixo,Iportas,Ilugares);                
+                INSERT INTO tb_item_vcl (id_item,pais,marca,ano,modelo,tipo,cor,cilindros,cilindada,pot_hp,alt,larg,comp,entre_eixo,portas,lugares)
+                VALUES(@id,Ipais,Imarca,Iano,Imodelo,Itipo,Icor,Icilindros,Icilindada,Ipot_hp,Ialt,Ilarg,Icomp,Ientre_eixo,Iportas,Ilugares);                
             ELSE 
 				IF(Inome="")THEN
 					DELETE FROM tb_item WHERE id=Iid;
                     DELETE FROM tb_item_vcl WHERE id_item=Iid;
 				ELSE
 					UPDATE tb_item SET id_acervo=Iid_acervo,nome=Inome,cat=Icat,obs=Iobs WHERE id=Iid;
-                    UPDATE tb_item_vcl SET pais=Ipais,marca=Imarca,ano=Iano,modelo=Imodelo,chassi=Ichassi,placa=Iplaca,tipo=Itipo,cor=Icor,cilindros=Icilindros,
-                    cilindrada=Icilindrada,pot_hp=Ipot_hp,vel_max=Ivel_max,alt=Ialt,larg=Ilarg,comp=Icomp,entre_eixo=Ientre_eixo,portas=Iportas,lugares=Ilugares
+                    UPDATE tb_item_vcl SET pais=Ipais,marca=Imarca,ano=Iano,modelo=Imodelo,tipo=Itipo,cor=Icor,cilindros=Icilindros,cilindada=Icilindada,
+                    pot_hp=Ipot_hp,alt=Ialt,larg=Ilarg,comp=Icomp,entre_eixo=Ientre_eixo,portas=Iportas,lugares=Ilugares
                     WHERE id_item=Iid;
 				END IF;
             END IF;

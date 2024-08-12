@@ -1,0 +1,20 @@
+
+.main-content{
+    display: flex;
+}
+
+.content-item{
+    display: flex;
+    flex-direction: column;
+    border: solid;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 15px;
+}
+
+.row-item{
+    display: flex;
+    flex-direction: row;    
+    align-items: center;
+    gap: 10px;
+}

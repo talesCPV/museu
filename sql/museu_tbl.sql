@@ -25,26 +25,23 @@ CREATE TABLE tb_usr_perm_perfil (
 
  DROP TABLE tb_acesso;
 CREATE TABLE tb_acesso (
-    id_owner int(11) NOT NULL,
-    id_acervo int(11) NOT NULL,
-    token varchar(64) NOT NULL,
-    criado_em datetime,
-    expira_em datetime,
-    ler boolean default 1,
-    criar boolean default 0,
-    alterar boolean default 0,
-    deletar boolean default 0,
-    FOREIGN KEY (id_owner) REFERENCES tb_usuario(id),
-    FOREIGN KEY (id_acervo) REFERENCES tb_acervo(id),
-    PRIMARY KEY (token)
+    id int(11) NOT NULL AUTO_INCREMENT,
+    email varchar(70) NOT NULL,
+    hash varchar(64) NOT NULL,
+    token varchar(64) DEFAULT NULL,
+    access int(11) DEFAULT -1,
+	UNIQUE KEY (hash),
+	UNIQUE KEY (email),
+    PRIMARY KEY (id)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
 
  DROP TABLE tb_mail;
 CREATE TABLE tb_mail (
 	data TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
     id_from int(11) NOT NULL,
     id_to int(11) NOT NULL,
-    message varchar(1000),
+    message varchar(512),
     looked boolean DEFAULT 0,
     FOREIGN KEY (id_from) REFERENCES tb_usuario(id),
     FOREIGN KEY (id_to) REFERENCES tb_usuario(id),
@@ -100,14 +97,11 @@ CREATE TABLE tb_item_vcl (
     marca varchar(20) DEFAULT NULL,
 	ano varchar(4) DEFAULT NULL,
     modelo varchar(30) DEFAULT NULL,
-    chassi varchar(20) DEFAULT NULL,
-    placa varchar(10) DEFAULT NULL,
     tipo varchar(20) DEFAULT NULL,
     cor varchar(15) DEFAULT NULL,
     cilindros int DEFAULT NULL,
-    cilindrada double DEFAULT NULL,
-    pot_hp double DEFAULT NULL,
-    vel_max double DEFAULT NULL,
+    cilindada double DEFAULT NULL,
+    pot_hp double DEFAULT NULL,    
     alt double DEFAULT NULL,
     larg double DEFAULT NULL,
     comp double DEFAULT NULL,

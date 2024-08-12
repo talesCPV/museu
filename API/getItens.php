@@ -22,14 +22,16 @@
         foreach($rows as $key=>$value){
             
             $path ='files/'. $rows[$key]['id_acervo'].'/'.$rows[$key]['id'].'/';
-            $files = scandir(getcwd()."/../$path");
+            $dir = getcwd()."/../$path";
 
             $rows[$key]['files'] = [];
-            for($i=2; $i<count($files); $i++){          
-                array_push($rows[$key]['files'],$URL_FOLDER.$path.$files[$i]);
+            if(is_dir($dir)){
+                $files = scandir($dir);
+                for($i=2; $i<count($files); $i++){          
+                    array_push($rows[$key]['files'],$URL_FOLDER.$path.$files[$i]);
+                }            
             }
-             
-          }
+        }
 
 //        var_dump($rows);
         print json_encode($rows, JSON_UNESCAPED_UNICODE);
