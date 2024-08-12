@@ -13,6 +13,7 @@ then
     git add API/
     git add assets/
     git add backend/
+    git add CDN/
     git add config/
     git add scripts/
     git add sql/
