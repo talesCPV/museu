@@ -18,25 +18,26 @@
 
         $conexao->close();
 
-
-//        $json = json_encode($rows);
-
-        var_dump($rows);
-
-        echo '<br><br><br>';
-
         foreach($rows as $key=>$value){
 
-            echo $value;
+            $rows[$key]['files'] = [];
+    
+            $dir = '/../files/'. $rows[$key]['id_acervo'].'/'.$rows[$key]['id'].'/';
+            $files = scandir(getcwd().$dir);
 
-            $rows[$key]['link'] = 'teste';
+            $arr_dir = explode("/", getcwd() );
+            $path = $arr_dir[count($arr_dir)-2].'/files/'. $rows[$key]['id_acervo'].'/'.$rows[$key]['id'].'/';
 
-
-            echo($rows[$key]['link'].', ');
+    
+            for($i=2; $i<count($files); $i++){
+//                echo $path. $files[$i];                 
+                array_push($rows[$key]['files'],$path. $files[$i]);
+            }
+             
           }
 
-
-//        print json_encode($rows);
+        var_dump($rows);
+//        print json_encode($rows, JSON_UNESCAPED_UNICODE);
 
     }
 

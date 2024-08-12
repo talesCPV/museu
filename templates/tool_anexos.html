@@ -99,6 +99,7 @@
                     const open = new Object
                     open.label = 'Abrir em uma nova aba'
                     open.link = ()=>{
+                        alert(sqr.src)
                         window.open(sqr.src, '_blank');
                     }            
                     tbl.push(open)
