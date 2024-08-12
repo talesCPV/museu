@@ -1,10 +1,12 @@
+const API_URL = 'http://localhost/museu/API/'
+
 
 function getAcervo(token,id_div){
 
     const data = new URLSearchParams()
         data.append("token", token)
 
-    const myRequest = new Request("http://localhost/museu/API/getItens.php",{
+    const myRequest = new Request(API_URL+"getItens.php",{
         method : "POST",
         body : data
     });
