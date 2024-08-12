@@ -1,7 +1,7 @@
 const API_URL = 'http://localhost/museu/API/'
 
 
-function getAcervo(token,id_div){
+function getAcervo(token,id_div=''){
 
     const data = new URLSearchParams()
         data.append("token", token)
@@ -11,7 +11,7 @@ function getAcervo(token,id_div){
         body : data
     });
 
-    const myPromisse = new Promise((resolve,reject) =>{
+    const out = new Promise((resolve,reject) =>{
         fetch(myRequest)
         .then(function (response){
             if (response.status === 200) { 
@@ -22,20 +22,23 @@ function getAcervo(token,id_div){
         })
     })
 
-    myPromisse.then((txt)=>{
-        const json = JSON.parse(txt)
-        const main_div = document.getElementById(id_div)
-        for(let i=0; i<json.length; i++){
-            const div = document.createElement('div')
-            const nome = document.createElement('div')
-            nome.innerHTML = `<p>Acervo:</p><p id="nome-acervo">${json[i].acervo}</p>
-                            <img src="${json[i].files[0]}"/>`
-        
-            div.appendChild(nome)
-
-            main_div.appendChild(div)
-        }
-
-    })
-
+    if(id_div == ""){
+        return out
+    }else{
+        out.then((txt)=>{
+            const json = JSON.parse(txt)
+            const main_div = document.getElementById(id_div)
+            for(let i=0; i<json.length; i++){
+                const div = document.createElement('div')
+                const nome = document.createElement('div')
+                nome.innerHTML = `<p>Acervo:</p><p id="nome-acervo">${json[i].acervo}</p>
+                                <img src="${json[i].files[0]}"/>`
+            
+                div.appendChild(nome)
+    
+                main_div.appendChild(div)
+            }
+    
+        })
+    }
 }
