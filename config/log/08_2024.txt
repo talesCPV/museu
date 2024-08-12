@@ -99,3 +99,7 @@
 11/08/2024 05:11 adm@museu.com.br : TOKEN Editado, Acervo:MUSEU PAULISTA DE ANTIGUIDADES MECANICAS ROBERTO LEE, Expira 10/10/2024 (1,1,1,1) 
 11/08/2024 21:10 adm@museu.com.br : Item Cadastrado  Segundo Item, VCL
 11/08/2024 21:11 adm@museu.com.br : Imagem Adicionada -> : Segundo Item
+12/08/2024 20:21 adm@museu.com.br : Imagem Adicionada -> : Novo Polo
+12/08/2024 20:28 adm@museu.com.br : Imagem Adicionada -> : Novo Polo
+12/08/2024 21:09 adm@museu.com.br : Imagem Adicionada -> : Segundo Item
+12/08/2024 21:28 adm@museu.com.br : Imagem Adicionada -> : Segundo Item

@@ -88,10 +88,7 @@
 
                 const sqr = document.createElement(arq)
                 sqr.className = 'square_frm'
-                sqr.src = `files/${pageData.id_acervo}/${pageData.id_item}/${json[i]}`
-                sqr.style.backgroundColor = '#59f1a4'
-                sqr.style.fontSize = '0.9em'
-                sqr.style.overflow = 'hidden'
+                sqr.src = `files/${pageData.id_acervo}/${pageData.id_item}/${json[i]}`                
                 sqr.innerHTML = `<p>${filename}</p><h1>${ext.toUpperCase()}</h1>`
                 sqr.addEventListener('click',(e)=>{
                     const tbl = []
