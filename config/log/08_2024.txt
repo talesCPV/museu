@@ -103,3 +103,8 @@
 12/08/2024 20:28 adm@museu.com.br : Imagem Adicionada -> : Novo Polo
 12/08/2024 21:09 adm@museu.com.br : Imagem Adicionada -> : Segundo Item
 12/08/2024 21:28 adm@museu.com.br : Imagem Adicionada -> : Segundo Item
+13/08/2024 14:55 adm@museu.com.br : Item Cadastrado  teste 3, VCL
+13/08/2024 14:55 adm@museu.com.br : Item Editado teste 3 -> Maverick, VCL
+13/08/2024 16:51 adm@museu.com.br : Permissao alterada, Modulo: Sistema, Acesso:[[0,1]])
+13/08/2024 16:51 adm@museu.com.br : Permissao alterada, Modulo: Ferramentas, Acesso:[[0,1]])
+13/08/2024 16:51 adm@museu.com.br : Permissao alterada, Modulo: Cadastros, Acesso:[[0,1]])

@@ -1,22 +1,31 @@
 
+@import url(https://fonts.googleapis.com/css2?family=Poppins&display=swap);
+
+*{
+    box-sizing: border-box;
+    transition: box-shadow .1s ease;
+}
+
 .main-content{
     display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    font-family:   'Poppins', 'Verdana';
 }
 
 .content-item{
-    display: flex;
+    display: none;
     flex-direction: column;
     gap: 5px;
-    border: solid;
     padding: 10px;
     margin: 5px;
-    border-radius: 15px;
 }
 
 .row-item{
     display: flex;
     flex-direction: row;    
     align-items: center;
+    justify-content: center;
     gap: 10px;
 }
 
@@ -49,3 +58,58 @@
     object-fit: contain;    
     max-height: 200px;
 }
+
+.capa-item{
+    display: flex;
+    position: relative;
+    width: 200px;
+    height: 200px;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+.show-item{
+    /*border: solid rgba(8, 8, 8, 0);*/
+    border-radius: 15px;
+}
+
+.show-item:hover{
+    cursor: pointer;
+/*    border: solid rgba(8, 8, 8, 0.308);*/
+}
+
+.capa-item:hover h3{
+    display: block;
+    z-index: 1;
+}
+
+.capa-item h3{
+    display: none;
+    color: azure;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.capa-item-nome{
+    position: absolute;
+    background-color: #f4e6d2;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.capa-item img{
+    width: 200px;
+    height: fit-content;
+}
+ .show-data{
+    display: block;
+ }
+
