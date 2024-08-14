@@ -29,6 +29,10 @@
         "SYS-0"  => 'CALL sp_set_usr_perm_perf(@access,@hash,x00,"x01");', // ID, NOME
         "SYS-1"  => 'CALL sp_view_usr_perm_perf(@access,@hash,"x00","x01","x02");', // FIELD,SIGNAL, VALUE
 
+        /* AUTOR */
+        "AUT-0" => 'CALL sp_view_autor(@access,@hash,"x00","x01","x02");', // FIELD, SIGNAL, VALUE
+        "AUT-1" => 'CALL sp_set_autor(@access,@hash,x00,x01,x02,"x03",x04,"x05","x06","x07","x08","x09");', // id,id_pai,id_mae,nome,sexo(0=F 1=M),data_nasc,pais,uf,cidade,obs
+
         /* ACERVO */
         "ACE-0"  => 'CALL sp_view_acervo(@access,@hash,"x00","x01","x02");', // FIELD, SIGNAL, VALUE
         "ACE-1"  => 'CALL sp_set_acervo(@access,@hash,x00,"x01","x02","x03","x04","x05","x06","x07","x08","x09","x10","x11","x12","x13","x14");', // id,nome,lat,lon,pais,uf,cidade,rua,num,comp,bairro,tel,email,obs,cep

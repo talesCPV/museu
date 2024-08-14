@@ -56,6 +56,25 @@ CREATE TABLE tb_calendario (
     PRIMARY KEY (id_user,data_agd)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
 
+/* AUTOR */
+
+ DROP TABLE tb_autor;
+CREATE TABLE tb_autor (
+	id int(11) NOT NULL AUTO_INCREMENT,
+    id_pai int(11) DEFAULT NULL,
+    id_mae int(11) DEFAULT NULL,
+    nome varchar(50) NOT NULL,
+    sexo bool DEFAULT 1,
+    data_nasc date NOT NULL,
+    pais varchar(30) DEFAULT NULL,
+    uf varchar(5) DEFAULT NULL,
+    cidade varchar(30) DEFAULT NULL,
+    obs MEDIUMTEXT,
+    FOREIGN KEY (id_pai) REFERENCES tb_autor(id),
+    FOREIGN KEY (id_mae) REFERENCES tb_autor(id),
+    PRIMARY KEY (id)
+) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
 /* ACERVO */
 
  DROP TABLE tb_acervo;

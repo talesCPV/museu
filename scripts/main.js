@@ -16,6 +16,8 @@ getFile('/../config/NFs_rules.json').then((json)=>{
 
 /*  FUNCTIONS  */
 
+const isNull = val => val === null ? 0 : val;
+
 function forceHTTPS(){
     location.protocol !== 'https:' ? location.replace(`https:${location.href.substring(location.protocol.length)}`) : null
 }

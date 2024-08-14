@@ -1,0 +1,68 @@
+
+<template>
+    <style>
+
+    </style>
+
+        <fieldset class="fds-busca autor">
+            <legend>Filtro</legend>
+            <div class="inline">
+                <label for="edtBusca">por:</label>
+                <select id="cmbBusca">
+                    <option value="id" signal="IN">Código</option>
+                    <option value="nome" signal="LIKE" selected>Nome</option>
+                    <option value="acervo" signal="LIKE" >Acervo</option>
+                </select>
+                <input type="text" id="edtBusca" onkeypress="return getEnter(event, 'btnBusca')">
+                <button id="btnBusca" class="btn-round" ><span class="mdi mdi-magnify"></span></button>
+                <button id="btnNovo" class="btn-round"><span class="mdi mdi-plus-thick"></span></button>            
+            </div>
+
+            <table id="tblAutor"></table>
+        </fieldset>
+    
+</template>
+<script>
+  
+    const pageData = main_data.busca_autor.data
+    const pageFunc = main_data.busca_autor.func
+    const pageScreen = document.querySelector('#card-busca_autor')
+
+    pageFunc.fillAutor = ()=>{      
+        const tbl = pageScreen.querySelector('#tblAutor')
+        tbl.innerHTML = ''
+        const query = getVal('autor')
+        const params = new Object;
+            params.field = query[0]
+            params.signal = query[1]
+            params.value = query[2]
+        const myPromisse = queryDB(params,'AUT-0');
+        myPromisse.then((resolve)=>{
+            const json = JSON.parse(resolve)
+            tbl.style.display = json.length > 0 ? 'inline-table' : 'none'
+            tbl.head('Cod.,Nome,Sexo,País')
+            for(let i=0; i<json.length;i++){
+                tbl.plot(json[i],'id,nome,sexo,pais','int,Upp,cha 0=Fem 1=Masc, Upp')
+            }         
+        });
+    }
+
+    pageScreen.querySelector('#btnBusca').addEventListener('click',()=>{
+        pageFunc.fillAutor()
+    })
+
+    pageScreen.querySelector('#btnNovo').addEventListener('click',()=>{
+        openHTML('adm_view_autor.html','pop-up','Novo Ítem')
+    })
+
+    pageScreen.querySelector('#tblAutor').addEventListener('click',(e)=>{
+        try{
+            if(main_data.hasOwnProperty('adm_view_autor')){
+                closeModal('adm_view_autor')
+            }
+            data = e.target.parentNode.data
+            data != undefined ? openHTML('adm_view_autor.html','pop-up',`Edição de dados - ${data.nome.toUpperCase()}`,data) : null
+       }catch{null}
+    })
+
+</script>

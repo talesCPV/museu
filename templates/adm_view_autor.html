@@ -1,0 +1,171 @@
+
+<template>
+    <style>
+        .frm{
+            padding: 10px;
+        }
+
+        @media all and (max-width : 768px) {
+            .frm input, .frm select{
+                width: 98% !important;
+            }
+        }
+
+    </style>
+  
+    <fieldset class="frm" >
+        <legend>Ítem</legend>
+
+        <div class="inline">
+            <label for="edtRazSoc">Nome*</label>
+            <input type="text" class="only-view" id="edtNome" maxlength="90" disabled>
+        </div>
+        <div class="inline">
+            <label for="edtPai">Pai</label>
+            <div class="edtbtn">
+                <input type="text" class="only-view" id="edtPai" readonly disabled>
+                <button class="only-view btn-round" disabled><span class="mdi mdi-magnify" onclick="(openHTML('busca_autor.html','pop-up','Pai do Autor',{'org':'pai'}))"></span></button>
+            </div>
+        </div>        
+        <div class="inline">
+            <label for="edtMae">Mãe</label>
+            <div class="edtbtn">
+                <input type="text" class="only-view" id="edtMae" readonly disabled>
+                <button class="only-view btn-round" disabled><span class="mdi mdi-magnify" onclick="(openHTML('busca_autor.html','pop-up','Mãe do Autor',{'org':'mae'}))"></span></button>
+            </div>
+        </div>        
+
+        <div class="inline">
+            <label for="edtDesc">Sexo</label>
+            <select class="only-view" id="cmbSexo" disabled>
+                <option value="0">Feminino</option>
+                <option value="1" selected>Masculino</option>
+            </select>
+        </div>        
+        <div class="inline">
+            <label for="edtNasc">Nascimento</label>
+            <input type="date" class="only-view" id="edtNasc" disabled>
+        </div>
+        <div class="inline">
+            <label for="edtPais">País</label>
+            <input type="text" class="only-view" id="edtPais" maxlength="30" disabled>
+            <label for="edtUF">UF</label>
+            <input type="text" class="only-view" id="edtUF" maxlength="2" disabled>
+            <label for="edtCidade">Cidade</label>
+            <input type="text" class="only-view" id="edtCidade" maxlength="30" disabled>
+        </div>
+        <div class="inline">
+            <label for="edtObs">Obs</label>
+            <textarea id="edtObs" class="only-view" rows="6" disabled></textarea>
+        </div>
+
+        <div class="line">
+            <button id="btnEdit">Editar</button>
+            <button id="btnDel" class="only-view" disabled>Deletar</button>
+            <button id="btnSave" class="only-view" disabled>Salvar</button>
+        </div>
+    </fieldset>
+
+</template>
+<script>
+    
+    const pageData = main_data.adm_view_autor.data
+    const pageFunc = main_data.adm_view_autor.func
+    const pageScreen = document.querySelector('#card-adm_view_autor')
+    const newAutor = Object.keys(pageData).length == 0
+
+    function startPage(){
+        if(newAutor){
+            openFields(1)
+            pageScreen.querySelector('#btnDel').disabled = 1
+            pageScreen.querySelector('#btnEdit').disabled = 1
+            pageScreen.querySelector('#edtPai').data = {'id':0}
+            pageScreen.querySelector('#edtMae').data = {'id':0}
+        }else{
+            pageScreen.querySelector('#edtNome').value = pageData.nome
+            pageScreen.querySelector('#edtPai').value = pageData.pai
+            pageScreen.querySelector('#edtPai').data = {'id': isNull(pageData.id_pai)}
+            pageScreen.querySelector('#edtMae').value = pageData.mae
+            pageScreen.querySelector('#edtMae').data = {'id': isNull(pageData.id_mae)}
+            pageScreen.querySelector('#edtObs').value = pageData.obs
+            pageScreen.querySelector('#cmbSexo').value = pageData.sexo
+            pageScreen.querySelector('#edtPais').value = pageData.pais
+            pageScreen.querySelector('#edtUF').value = pageData.uf
+            pageScreen.querySelector('#edtCidade').value = pageData.cidade
+
+            pageScreen.querySelector('#btnEdit').disabled = 0
+        }
+    }
+
+    function openFields(open=1){
+        const view = pageScreen.querySelectorAll('.only-view')
+        for(let i=0; i<view.length; i++){
+            view[i].disabled = !open
+        }
+    }
+
+    pageFunc.buscaPai= (data)=>{
+        pageScreen.querySelector('#edtPai').value = data.nome
+        pageScreen.querySelector('#edtPai').data = data
+    }
+
+    pageFunc.buscaMae= (data)=>{
+        pageScreen.querySelector('#edtMae').value = data.nome
+        pageScreen.querySelector('#edtMae').data = data
+    }
+
+
+    pageFunc.setAutor = (del=0)=>{
+        if(checkField(['edtNome'])){
+            const params = new Object;
+                params.id = newAutor ? 0 : pageData.id
+                params.id_pai = pageScreen.querySelector('#edtPai').data.id
+                params.id_mae = pageScreen.querySelector('#edtMae').data.id
+                params.nome = del ? '' : pageScreen.querySelector('#edtNome').value.trim()
+                params.sexo = pageScreen.querySelector('#cmbSexo').value
+                params.nasc = pageScreen.querySelector('#edtNasc').value.trim()
+                params.pais = pageScreen.querySelector('#edtPais').value.trim()
+                params.uf = pageScreen.querySelector('#edtUF').value.trim()
+                params.cidade = pageScreen.querySelector('#edtCidade').value.trim()
+                params.obs = pageScreen.querySelector('#edtObs').value.trim()
+            const myPromisse = queryDB(params,'AUT-1');
+            myPromisse.then((resolve)=>{
+                setLog(`Autor ${newAutor?'Cadastrado':del ? 'Deletado' : 'Editado'} ${ !newAutor ? pageData.nome+' ->' :''} ${params.nome}`)
+                try{
+                    closeModal('busca_autor')
+                    openHTML('busca_autor.html','pop-up','Autores')
+                    .then(()=>{
+                        main_data.busca_autor.func.fillAutor()
+                    })
+                }catch{
+                    console.error('Tela fechada pelo usuário!')
+                }
+                alert('Cadastrado efetuado!')
+                closeModal('adm_view_autor')
+            })
+        }
+    }
+
+    pageScreen.querySelector('#btnSave').addEventListener('click',()=>{
+        pageFunc.setAutor()
+    })
+
+    pageScreen.querySelector('#btnDel').addEventListener('click',()=>{
+        if(confirm('Deseja realmente deletar este Autor?')){            
+            pageFunc.setAutor(1)
+        }
+    })
+    
+    pageScreen.querySelector('#btnEdit').addEventListener('click',()=>{
+        if(pageScreen.querySelector('#btnSave').disabled){
+            if(confirm('Abrir registro para edição?')){
+                openFields(1)
+            }
+        }else{
+            openFields(0)
+        }
+    })
+
+    startPage()
+
+</script>

@@ -26,3 +26,12 @@ SELECT * FROM vw_itens_veiculo;
 		VCL.id_item;
         
 SELECT * FROM vw_itens;
+
+ DROP VIEW vw_autor;
+ CREATE VIEW vw_autor AS
+	SELECT *,
+	(SELECT nome FROM tb_autor WHERE id=AUT.id_pai) AS pai,
+	(SELECT nome FROM tb_autor WHERE id=AUT.id_mae) AS mae 
+	FROM tb_autor AS AUT;
+    
+SELECT * FROM vw_autor;    

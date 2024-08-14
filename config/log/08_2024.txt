@@ -108,3 +108,11 @@
 13/08/2024 16:51 adm@museu.com.br : Permissao alterada, Modulo: Sistema, Acesso:[[0,1]])
 13/08/2024 16:51 adm@museu.com.br : Permissao alterada, Modulo: Ferramentas, Acesso:[[0,1]])
 13/08/2024 16:51 adm@museu.com.br : Permissao alterada, Modulo: Cadastros, Acesso:[[0,1]])
+14/08/2024 15:29 adm@museu.com.br : Menu Incluido (Autores)
+14/08/2024 15:32 adm@museu.com.br : Menu Alterado (Autores, busca_autor.html, pop-up, Autores)
+14/08/2024 16:37 adm@museu.com.br : Autor Cadastrado  Tales
+14/08/2024 16:38 adm@museu.com.br : Autor Cadastrado  Tales
+14/08/2024 16:43 adm@museu.com.br : Autor Cadastrado  Tales Cembraneli Dantas
+14/08/2024 16:46 adm@museu.com.br : Autor Editado Tales Cembraneli Dantas -> Tales Cembraneli Dantas
+14/08/2024 16:53 adm@museu.com.br : Autor Editado Tales Cembraneli Dantas -> Tales Cembraneli Dantas
+14/08/2024 16:54 adm@museu.com.br : Autor Editado Tales Cembraneli Dantas -> Tales Cembraneli Dantas

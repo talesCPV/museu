@@ -2,10 +2,12 @@
 async function openHTML(template='',where="content-screen",label="", data="",width='auto'){
 
     width = width == 'auto' ? (document.querySelector('body').offsetWidth - 160)+'px' : width+'px'
+    const page_name = template.split('.')[0]
+    main_data.hasOwnProperty(page_name) ? closeModal(page_name) : null
 
+    if(template.trim() != ""){     
+        
 
-    if(template.trim() != "" && !main_data.hasOwnProperty(template.split('.')[0])){     
-        const page_name = template.split('.')[0]
         return await new Promise((resolve,reject) =>{
             fetch( "templates/"+template)
             .then( stream => stream.text())

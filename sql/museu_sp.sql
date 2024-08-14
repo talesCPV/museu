@@ -427,3 +427,58 @@ DELIMITER $$
         END IF;
 	END $$
 DELIMITER ;
+
+DROP PROCEDURE sp_set_autor;
+DELIMITER $$
+	CREATE PROCEDURE sp_set_autor(	
+		IN Iallow varchar(80),
+		IN Ihash varchar(64),
+        IN Iid int(11),
+        IN Iid_pai int(11),
+        IN Iid_mae int(11),
+		IN Inome varchar(50),
+		IN Isexo bool,
+		IN Idata_nasc date,
+		IN Ipais varchar(30),
+		IN Iuf varchar(5),
+		IN Icidade varchar(30),
+		IN Iobs MEDIUMTEXT
+    )
+	BEGIN    
+		CALL sp_allow(Iallow,Ihash);
+		IF(@allow)THEN
+			SET @id_pai = (SELECT IF(Iid_pai=0,null,Iid_pai));
+			SET @id_mae = (SELECT IF(Iid_mae=0,null,Iid_mae));
+			IF(Iid=0)THEN
+				INSERT INTO tb_autor (id_pai,id_mae,nome,sexo,data_nasc,pais,uf,cidade,obs)
+				VALUES (@id_pai,@id_mae,Inome,Isexo,Idata_nasc,Ipais,Iuf,Icidade,Iobs);
+            ELSE 
+				IF(Inome="")THEN
+					DELETE FROM tb_autor WHERE id=Iid;
+				ELSE
+					UPDATE tb_autor SET id_pai=@id_pai,id_mae=@id_mae,nome=Inome,sexo=Isexo,data_nasc=Idata_nasc,
+                    pais=Ipais,uf=Iuf,cidade=Icidade,obs=Iobs WHERE id=Iid;
+				END IF;
+            END IF;
+        END IF;
+	END $$
+DELIMITER ;
+
+ DROP PROCEDURE sp_view_autor;
+DELIMITER $$
+	CREATE PROCEDURE sp_view_autor(
+		IN Iallow varchar(80),
+		IN Ihash varchar(64),
+		IN Ifield varchar(30),
+        IN Isignal varchar(4),
+		IN Ivalue varchar(50)
+    )
+	BEGIN    
+		CALL sp_allow(Iallow,Ihash);
+		IF(@allow)THEN
+			SET @quer =CONCAT('SELECT * FROM vw_autor WHERE ',Ifield,' ',Isignal,' ',Ivalue,' ORDER BY ',Ifield,';');
+			PREPARE stmt1 FROM @quer;
+			EXECUTE stmt1;
+        END IF;
+	END $$
+DELIMITER ;
