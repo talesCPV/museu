@@ -1,50 +1,47 @@
 
 async function openHTML(template='',where="content-screen",label="", data="",width='auto'){
 
-    width = width == 'auto' ? (document.querySelector('body').offsetWidth - 160)+'px' : width+'px'
-    const page_name = template.split('.')[0]
-    main_data.hasOwnProperty(page_name) ? closeModal(page_name) : null
+    if(template.trim() != "" && data != undefined){
+        const page_name = template.split('.')[0]
+        main_data.hasOwnProperty(page_name) ? closeModal(page_name) : null
+    
+        return fetch( "templates/"+template)
+        .then( stream => stream.text())
+        .then( text => {
+            const temp = document.createElement('div');
+            temp.innerHTML = text;
+            let body = temp.getElementsByTagName('template')[0];
+            let script = temp.getElementsByTagName('script')[0];
 
-    if(template.trim() != ""){     
-        
+            if(body == undefined){
+                script = ''
+                body = document.createElement('div')
+                body.innerHTML = '<style>p{text-align : center;}</style> <p>Desculpe, este módulo ainda não foi implementado</p>'
+                body.style.color = '#FFFF00 !important'
+                where = 'pop-up'
+                label = 'ERRO 404!'
+            }
+            if(where == "pop-up"){
+                width = width == 'auto' ? (document.querySelector('body').offsetWidth - 160)+'px' : width+'px'
+                newModal(label,body.innerHTML,width,page_name)
+            }else{
+                const cont = body.innerHTML.replace('<h1>', `<span id="close-screen" onclick="document.querySelector('#imgLogo').click()">&times;</span><h1>`)                    
+                document.getElementById(where).innerHTML = cont;                    
+            }
 
-        return await new Promise((resolve,reject) =>{
-            fetch( "templates/"+template)
-            .then( stream => stream.text())
-            .then( text => {
-                const temp = document.createElement('div');
-                temp.innerHTML = text;
-                let body = temp.getElementsByTagName('template')[0];
-                let script = temp.getElementsByTagName('script')[0];
+            closeMenu()
 
-                if(body == undefined){
-                    script = ''
-                    body = document.createElement('div')
-                    body.innerHTML = '<style>p{text-align : center;}</style> <p>Desculpe, este módulo ainda não foi implementado</p>'
-                    body.style.color = '#FFFF00 !important'
-                    where = 'pop-up'
-                    label = 'ERRO 404!'
-                }
-                if(where == "pop-up"){
-                    newModal(label,body.innerHTML,width,page_name)
-                }else{
-                    const cont = body.innerHTML.replace('<h1>', `<span id="close-screen" onclick="document.querySelector('#imgLogo').click()">&times;</span><h1>`)                    
-                    document.getElementById(where).innerHTML = cont;                    
-                }
+            const new_obj = page_name
 
-                closeMenu()
+            main_data[new_obj] = new Object
+            main_data[new_obj].data = typeof(data) != 'object' ? new Object : data
+            main_data[new_obj].func = new Object
 
-                const new_obj = page_name
-
-                main_data[new_obj] = new Object
-                main_data[new_obj].data = typeof(data) != 'object' ? new Object : data
-                main_data[new_obj].func = new Object
-
-                eval(script.innerHTML);
-                resolve = body
-                 
-            }); 
+            eval(script.innerHTML);
+            resolve = body
+                
         }); 
+ 
     }
 }
 

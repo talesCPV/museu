@@ -447,8 +447,8 @@ DELIMITER $$
 	BEGIN    
 		CALL sp_allow(Iallow,Ihash);
 		IF(@allow)THEN
-			SET @id_pai = (SELECT IF(Iid_pai=0,null,Iid_pai));
-			SET @id_mae = (SELECT IF(Iid_mae=0,null,Iid_mae));
+			SET @id_pai = (SELECT IF(Iid_pai=0 OR Iid_pai=Iid,null,Iid_pai));
+			SET @id_mae = (SELECT IF(Iid_mae=0 OR Iid_mae=Iid,null,Iid_mae));
 			IF(Iid=0)THEN
 				INSERT INTO tb_autor (id_pai,id_mae,nome,sexo,data_nasc,pais,uf,cidade,obs)
 				VALUES (@id_pai,@id_mae,Inome,Isexo,Idata_nasc,Ipais,Iuf,Icidade,Iobs);
@@ -456,8 +456,9 @@ DELIMITER $$
 				IF(Inome="")THEN
 					DELETE FROM tb_autor WHERE id=Iid;
 				ELSE
-					UPDATE tb_autor SET id_pai=@id_pai,id_mae=@id_mae,nome=Inome,sexo=Isexo,data_nasc=Idata_nasc,
-                    pais=Ipais,uf=Iuf,cidade=Icidade,obs=Iobs WHERE id=Iid;
+					UPDATE tb_autor SET id_pai=@id_pai, id_mae=@id_mae, nome=Inome, sexo=Isexo,
+								data_nasc=Idata_nasc, pais=Ipais, uf=Iuf, cidade=Icidade, obs=Iobs 
+                    WHERE id=Iid;
 				END IF;
             END IF;
         END IF;

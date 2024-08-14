@@ -24,14 +24,14 @@
             <label for="edtPai">Pai</label>
             <div class="edtbtn">
                 <input type="text" class="only-view" id="edtPai" readonly disabled>
-                <button class="only-view btn-round" disabled><span class="mdi mdi-magnify" onclick="(openHTML('busca_autor.html','pop-up','Pai do Autor',{'org':'pai'}))"></span></button>
+                <button class="only-view btn-round" disabled><span class="mdi mdi-magnify" onclick="(openHTML('busca_autor.html','pop-up','Pai do Autor',{'org':'adm_view_autor','callback':'buscaPai'}))"></span></button>
             </div>
         </div>        
         <div class="inline">
             <label for="edtMae">Mãe</label>
             <div class="edtbtn">
                 <input type="text" class="only-view" id="edtMae" readonly disabled>
-                <button class="only-view btn-round" disabled><span class="mdi mdi-magnify" onclick="(openHTML('busca_autor.html','pop-up','Mãe do Autor',{'org':'mae'}))"></span></button>
+                <button class="only-view btn-round" disabled><span class="mdi mdi-magnify" onclick="(openHTML('busca_autor.html','pop-up','Mãe do Autor',{'org':'adm_view_autor','callback':'buscaMae'}))"></span></button>
             </div>
         </div>        
 
@@ -87,6 +87,7 @@
             pageScreen.querySelector('#edtPai').data = {'id': isNull(pageData.id_pai)}
             pageScreen.querySelector('#edtMae').value = pageData.mae
             pageScreen.querySelector('#edtMae').data = {'id': isNull(pageData.id_mae)}
+            pageScreen.querySelector('#edtNasc').value = pageData.data_nasc
             pageScreen.querySelector('#edtObs').value = pageData.obs
             pageScreen.querySelector('#cmbSexo').value = pageData.sexo
             pageScreen.querySelector('#edtPais').value = pageData.pais
@@ -131,17 +132,17 @@
             const myPromisse = queryDB(params,'AUT-1');
             myPromisse.then((resolve)=>{
                 setLog(`Autor ${newAutor?'Cadastrado':del ? 'Deletado' : 'Editado'} ${ !newAutor ? pageData.nome+' ->' :''} ${params.nome}`)
+                closeModal('busca_autor')
                 try{
-                    closeModal('busca_autor')
                     openHTML('busca_autor.html','pop-up','Autores')
-                    .then(()=>{
+                    .then((response)=>{
                         main_data.busca_autor.func.fillAutor()
+                        alert('Cadastrado efetuado!')
+                        closeModal('adm_view_autor')                 
                     })
                 }catch{
-                    console.error('Tela fechada pelo usuário!')
+                    console.error('ERRO!!!')
                 }
-                alert('Cadastrado efetuado!')
-                closeModal('adm_view_autor')
             })
         }
     }

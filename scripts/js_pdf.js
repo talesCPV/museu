@@ -21,7 +21,7 @@ var txt = new Object
     txt.dim = [90,80] 
 
 var imgData = new Image()
-    imgData.src = 'assets/logo.png'
+//    imgData.src = 'assets/logo.png'
 
 /* FUNCTIONS */
 

@@ -35,3 +35,5 @@ SELECT * FROM vw_itens;
 	FROM tb_autor AS AUT;
     
 SELECT * FROM vw_autor;    
+
+UPDATE tb_autor SET id_pai=null, id_mae=null WHERE id=1;

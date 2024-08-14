@@ -59,14 +59,11 @@
     })
 
     pageScreen.querySelector('#tblAcervo').addEventListener('click',(e)=>{
-        try{            
-            if(main_data.hasOwnProperty(pageData.org)){
-                data = e.target.parentNode.data
-                data != undefined ?  main_data[pageData.org].func.buscaAcervo(data) : null               
-            }
-            closeModal('busca_acervo')
-       }catch{null}
-        
+        if(main_data.hasOwnProperty(pageData.org)){
+            data = e.target.parentNode.data
+            main_data[pageData.org].func.buscaAcervo(data)
+        }
+        closeModal('busca_acervo')        
     })
 
 </script>

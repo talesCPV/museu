@@ -11,7 +11,12 @@
                 <select id="cmbBusca">
                     <option value="id" signal="IN">Código</option>
                     <option value="nome" signal="LIKE" selected>Nome</option>
-                    <option value="acervo" signal="LIKE" >Acervo</option>
+                    <option value="pai" signal="LIKE" >Pai</option>
+                    <option value="mae" signal="LIKE" >Mãe</option>
+                    <option value="pais" signal="LIKE" >País</option>
+                    <option value="uf" signal="LIKE" >Estado</option>
+                    <option value="cidade" signal="LIKE" >Cidade</option>
+
                 </select>
                 <input type="text" id="edtBusca" onkeypress="return getEnter(event, 'btnBusca')">
                 <button id="btnBusca" class="btn-round" ><span class="mdi mdi-magnify"></span></button>
@@ -56,13 +61,22 @@
     })
 
     pageScreen.querySelector('#tblAutor').addEventListener('click',(e)=>{
-        try{
+
+        data = e.target.parentNode.data
+
+        
+        if(main_data.busca_autor.data.org === undefined){
             if(main_data.hasOwnProperty('adm_view_autor')){
                 closeModal('adm_view_autor')
             }
-            data = e.target.parentNode.data
-            data != undefined ? openHTML('adm_view_autor.html','pop-up',`Edição de dados - ${data.nome.toUpperCase()}`,data) : null
-       }catch{null}
+            openHTML('adm_view_autor.html','pop-up',`Edição de dados - ${data.nome.toUpperCase()}`,data)
+
+        }else{
+            main_data[pageData.org].func[pageData.callback](data)
+            closeModal('busca_autor')
+        }
+
+
     })
 
 </script>
