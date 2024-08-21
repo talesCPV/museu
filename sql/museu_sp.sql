@@ -378,6 +378,28 @@ DELIMITER $$
 	END $$
 DELIMITER ;
 
+ DROP PROCEDURE sp_view_itens_detail;
+DELIMITER $$
+	CREATE PROCEDURE sp_view_itens_detail(
+		IN Iallow varchar(80),
+		IN Ihash varchar(64),
+		IN Iid_item int(11),
+        IN Icat varchar(3)
+    )
+	BEGIN    
+		CALL sp_allow(Iallow,Ihash);
+		IF(@allow)THEN
+			IF(Icat="VCL")THEN
+				SELECT * FROM vw_itens_veiculo WHERE id=Iid_item;
+            ELSE 
+				IF(Icat="QDR")THEN
+					SELECT * FROM vw_itens_quadro WHERE id=Iid_item;
+				END IF;
+            END IF;
+        END IF;
+	END $$
+DELIMITER ;
+
  DROP PROCEDURE sp_set_item_vcl;
 DELIMITER $$
 	CREATE PROCEDURE sp_set_item_vcl(	
@@ -421,6 +443,46 @@ DELIMITER $$
 					UPDATE tb_item SET id_acervo=Iid_acervo,nome=Inome,cat=Icat,obs=Iobs WHERE id=Iid;
                     UPDATE tb_item_vcl SET pais=Ipais,marca=Imarca,ano=Iano,modelo=Imodelo,tipo=Itipo,cor=Icor,cilindros=Icilindros,cilindada=Icilindada,
                     pot_hp=Ipot_hp,alt=Ialt,larg=Ilarg,comp=Icomp,entre_eixo=Ientre_eixo,portas=Iportas,lugares=Ilugares
+                    WHERE id_item=Iid;
+				END IF;
+            END IF;
+        END IF;
+	END $$
+DELIMITER ;
+
+ DROP PROCEDURE sp_set_item_qdr;
+DELIMITER $$
+	CREATE PROCEDURE sp_set_item_qdr(	
+		IN Iallow varchar(80),
+		IN Ihash varchar(64),
+        IN Iid int(11),
+        IN Iid_acervo int(11),
+		IN Inome varchar(90),
+		IN Icat varchar(3),
+		IN Iobs varchar(255),
+        IN Iid_autor int(11),
+        IN Ititulo varchar(50),
+		IN Iano varchar(4),
+		IN Itecnica varchar(30),
+		IN Ialt double,
+		IN Ilarg double
+    )
+	BEGIN    
+		CALL sp_allow(Iallow,Ihash);
+		IF(@allow)THEN
+			IF(Iid=0)THEN
+				INSERT INTO tb_item (id_acervo,nome,cat,obs)
+				VALUES (Iid_acervo,Inome,Icat,Iobs);
+                SET @id = (SELECT MAX(id) FROM tb_item);
+                INSERT INTO tb_item_qdr (id_item,id_autor,titulo,ano,tecnica,alt,larg)
+                VALUES(@id,Iid_autor,Ititulo,Iano,Itecnica,Ialt,Ilarg);
+            ELSE 
+				IF(Inome="")THEN
+					DELETE FROM tb_item WHERE id=Iid;
+                    DELETE FROM tb_item_qdr WHERE id_item=Iid;
+				ELSE
+					UPDATE tb_item SET id_acervo=Iid_acervo,nome=Inome,obs=Iobs WHERE id=Iid;
+                    UPDATE tb_item_qdr SET id_autor=Iid_autor, titulo=Ititulo,ano=Iano,tecnica=Itecnica,alt=Ialt,larg=Ilarg
                     WHERE id_item=Iid;
 				END IF;
             END IF;

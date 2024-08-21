@@ -27,11 +27,6 @@
                 <button id="btnBuscaAcervo" class="only-view btn-round" disabled><span class="mdi mdi-magnify"></span></button>
             </div>
         </div>        
-
-        <div class="inline">
-            <label for="edtDesc">Descrição*</label>
-            <textarea class="only-view" id="edtDesc" rows="5" disabled></textarea>
-        </div>        
         <div class="inline">
             <label for="cmbCat">Categoria</label>
             <select class="only-view" id="cmbCat" disabled>
@@ -92,8 +87,35 @@
             </div>                 
         </div>
         <div class="frm-cat QDR">
-
+            <div class="inline">
+                <label for="edtQdrTitulo">Título*</label>
+                <input type="text" class="only-view" id="edtQdrTitulo" maxlength="50" disabled>
+            </div>              
+            <div class="inline">
+                <label for="edtQdrTecnica">Técnica</label>
+                <input type="text" class="only-view" id="edtQdrTecnica" maxlength="30" disabled>
+            </div>                
+            <div class="inline">
+                <label for="edtQdrAutor">Autor*</label>
+                <div class="edtbtn">
+                    <input type="text" class="only-view" id="edtQdrAutor" readonly disabled>
+                    <button id="btnBuscaAutor" class="only-view btn-round" onclick="(openHTML('busca_autor.html','pop-up','Nome do Autor',{'org':'adm_view_item','callback':'buscaAutor'},600))" disabled><span class="mdi mdi-magnify"></span></button>
+                </div>
+                <label for="edtQdrAno">Ano</label>
+                <input type="text" class="only-view" id="edtQdrAno" maxlength="4" style="width: 200px;" disabled>
+            </div>
+            <div class="inline">
+                <label for="edtQdrAlt">Altura</label>
+                <input type="text" class="only-view" id="edtQdrAlt" maxlength="10" onfocus="this.select();" inputmode="decimal" onkeyup="valFloat(this)"disabled>
+                <label for="edtQdrLarg">Largura</label>
+                <input type="text" class="only-view" id="edtQdrLarg" maxlength="10" onfocus="this.select();" inputmode="decimal" onkeyup="valFloat(this)" disabled>
+            </div>            
         </div>
+
+        <div class="inline">
+            <label for="edtDesc">Descrição*</label>
+            <textarea class="only-view" id="edtDesc" rows="5" disabled></textarea>
+        </div>        
 
         <div class="line">
             <button id="btnAnexo" class="only-view" disabled>Anexos</button>
@@ -144,11 +166,21 @@
                     pageScreen.querySelector('#edtVclPor').value = pageData.portas
                     pageScreen.querySelector('#edtVclPass').value = pageData.lugares
                     break
+                case 'QDR':
+                    pageScreen.querySelector('#edtQdrTitulo').value = pageData.titulo
+                    pageScreen.querySelector('#edtQdrTecnica').value = pageData.tecnica
+                    pageScreen.querySelector('#edtQdrAno').value = pageData.ano
+                    pageScreen.querySelector('#edtQdrAutor').value = pageData.autor
+                    pageScreen.querySelector('#edtQdrAutor').data = {'id':pageData.id_autor}
+                    pageScreen.querySelector('#edtQdrAlt').value = pageData.alt
+                    pageScreen.querySelector('#edtQdrLarg').value = pageData.larg
+                    break
             }
             
             pageScreen.querySelector('#btnEdit').disabled = 0
             pageScreen.querySelector('#btnAnexo').disabled = 0
         }
+        pageFunc.pickCat()
     }
 
     function openFields(open=1){
@@ -156,6 +188,7 @@
         for(let i=0; i<view.length; i++){
             view[i].disabled = !open
         }
+        pageScreen.querySelector('#cmbCat').disabled = !newItem ? 1 : pageScreen.querySelector('#cmbCat').disabled
     }
 
     pageScreen.querySelector('#btnBuscaAcervo').addEventListener('click',()=>{
@@ -163,12 +196,21 @@
     })
 
     pageScreen.querySelector('#cmbCat').addEventListener('change',()=>{
+        pageFunc.pickCat()
+    })
+
+    pageFunc.pickCat = ()=>{
         const cat = pageScreen.querySelector('#cmbCat').value
         const frm = document.querySelectorAll('.frm-cat')
         for(let i=0; i<frm.length; i++){
             frm[i].style.display =  frm[i].classList[1] == cat ? 'block' : 'none'
         }
-    })
+    }
+
+    pageFunc.buscaAutor = (data)=>{
+        pageScreen.querySelector('#edtQdrAutor').value = data.nome
+        pageScreen.querySelector('#edtQdrAutor').data = data
+    }
 
     pageFunc.buscaAcervo = (data)=>{
         pageScreen.querySelector('#edtAcervo').value = data.nome
@@ -184,7 +226,7 @@
                 params.nome = del ? '' : pageScreen.querySelector('#edtNome').value.trim()
                 params.cat = pageScreen.querySelector('#cmbCat').value
                 params.obs = pageScreen.querySelector('#edtDesc').value.trim()
-                let query = 'ACE-3'
+                let query = 'ACE-4'
                 switch(params.cat){
                     case 'VCL':
                         params.pais = pageScreen.querySelector('#edtVclPais').value.trim()
@@ -205,10 +247,16 @@
                         params.e_eixo = pageScreen.querySelector('#edtVclEE').value.trim()
                         params.portas = pageScreen.querySelector('#edtVclPor').value.trim()                        
                         params.lugares = pageScreen.querySelector('#edtVclPass').value.trim()
-                        query = 'ACE-3'
+                        query = 'ACE-4'
                         break
                     case 'QDR':
-                        query = 'ACE-4'
+                        params.id_autor = pageScreen.querySelector('#edtQdrAutor').data.id
+                        params.titulo = pageScreen.querySelector('#edtQdrTitulo').value.trim()
+                        params.ano = pageScreen.querySelector('#edtQdrAno').value.trim()
+                        params.tecnica = pageScreen.querySelector('#edtQdrTecnica').value.trim()
+                        params.alt = pageScreen.querySelector('#edtQdrAlt').value.trim()
+                        params.larg = pageScreen.querySelector('#edtQdrLarg').value.trim()
+                        query = 'ACE-5'
                         break
                 }
 

@@ -140,3 +140,8 @@
 14/08/2024 20:09 adm@museu.com.br : Autor Editado Rafael de Oliveira Dantas -> Rafael de Oliveira Dantas
 14/08/2024 20:16 adm@museu.com.br : Autor Cadastrado  Ana Cristina Mimoso de Oliveira
 14/08/2024 20:16 adm@museu.com.br : Autor Editado Rafael de Oliveira Dantas -> Rafael de Oliveira Dantas
+15/08/2024 19:23 adm@museu.com.br : Item Cadastrado  Pintura Teste, QDR
+15/08/2024 20:16 adm@museu.com.br : Item Editado Pintura Teste -> Pintura Teste, QDR
+15/08/2024 20:17 adm@museu.com.br : Item Editado Segundo Item -> Segundo Item, VCL
+15/08/2024 20:17 adm@museu.com.br : Item Editado Segundo Item -> Segundo Item de teste, VCL
+15/08/2024 20:18 adm@museu.com.br : Item Editado Novo Polo -> Novo Polo, VCL

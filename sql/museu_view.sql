@@ -3,27 +3,46 @@
  DROP VIEW vw_itens_veiculo;
  CREATE VIEW vw_itens_veiculo AS
     SELECT 
-        ITN.*,VCL.*
+        ACE.nome AS acervo,ITN.*,VCL.*
     FROM
-        tb_item AS ITN
+        tb_acervo AS ACE
+        INNER JOIN tb_item AS ITN
         LEFT JOIN tb_item_vcl AS VCL
-        ON VCL.id_item = ITN.id;
+        ON ACE.id = ITN.id_acervo
+        AND VCL.id_item = ITN.id
+        WHERE ITN.cat="VCL"
+        GROUP BY ITN.id;
         
 SELECT * FROM vw_itens_veiculo;
+
+ DROP VIEW vw_itens_quadro;
+  CREATE VIEW vw_itens_quadro AS
+    SELECT 
+		ACE.nome AS acervo, AUT.nome as autor,ITN.*,QDR.*
+    FROM
+		tb_acervo AS ACE
+        INNER JOIN tb_item AS ITN
+        INNER JOIN tb_autor AS AUT
+        LEFT JOIN tb_item_qdr AS QDR
+        ON QDR.id_item = ITN.id
+        AND QDR.id_autor = AUT.id
+        WHERE ITN.cat="QDR"
+        AND id_quadro > 0
+        GROUP BY ITN.id;
+        
+SELECT * FROM vw_itens_quadro;
 
  DROP VIEW vw_itens;
  CREATE VIEW vw_itens AS
     SELECT 
 		ACE.nome AS acervo,
-        VCL.*
+        ITN.*
     FROM
 		tb_acervo AS ACE
-    INNER JOIN
-		vw_itens_veiculo AS VCL
-    ON
-		VCL.id_acervo = ACE.id
-	GROUP BY 
-		VCL.id_item;
+	INNER JOIN
+		tb_item AS ITN
+	ON
+		ACE.id = ITN.id_acervo;
         
 SELECT * FROM vw_itens;
 

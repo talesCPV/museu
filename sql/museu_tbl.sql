@@ -130,3 +130,18 @@ CREATE TABLE tb_item_vcl (
 	FOREIGN KEY (id_item) REFERENCES tb_item(id),
     PRIMARY KEY (id_veiculo)
 ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
+
+ DROP TABLE tb_item_qdr;
+CREATE TABLE tb_item_qdr (
+    id_quadro int(11) NOT NULL AUTO_INCREMENT,
+    id_item int(11) NOT NULL,
+	id_autor int(11) NOT NULL,
+    titulo varchar(50) NOT NULL,
+	ano varchar(4) DEFAULT NULL,
+    tecnica varchar(30) DEFAULT NULL,
+    alt double DEFAULT NULL,
+    larg double DEFAULT NULL,
+	FOREIGN KEY (id_item) REFERENCES tb_item(id),
+	FOREIGN KEY (id_autor) REFERENCES tb_autor(id),
+    PRIMARY KEY (id_quadro)
+) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;
